@@ -35,7 +35,8 @@ then the images get decrypted:
 ![62e24b3e1a58efc874ca500096195e0b.png](./62e24b3e1a58efc874ca500096195e0b.png)
 then they get transformed into a virtual file inside of memory:
 ![3ecaa380db6631e5d1c3bd7bcd598614.png](./3ecaa380db6631e5d1c3bd7bcd598614.png)
-then we open the virtual image files with pillow so we can use them to create tkinter image variables that we can use in the code
+then we open the virtual image files with pillow so we can use them to create tkinter image variables that we can use in the code.
+
 ![ed87bcff38470362e7b08cf9d26649b9.png](./ed87bcff38470362e7b08cf9d26649b9.png)
 One of the questions I had when I was building this project was "how much can the code base grow while keeping everything in the same Python file and still having the program to work properly?". Well, the answer for now is **2613 lines of code**.
 
