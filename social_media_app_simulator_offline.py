@@ -1,0 +1,2613 @@
+print('LOG:')
+print(' ')
+print(' ')
+import os #para detectar si estas en linux o en windows y para trabajar con el sistema operativo
+from pprint import saferepr # no me acuerdo para que servia
+import stat #para cosas de sistemas operativos creo
+import math #para lla calculadora
+
+import tkinter as tk # GUI
+from tkinter import ttk, messagebox #messagebox para widgets desplegables
+from tkinter.font import Font #fuentes especiales
+from PIL import Image, ImageTk #para trabajar con imagenes
+
+import io #para trabajar con imagenes, especificamente abrir archivos o algo asi
+import base64 #para encriptar imagenes i eso
+from tkinter import PhotoImage #para trabajar con imagenes
+
+
+
+
+
+from math import * #para la caluladora del menu "mas opciones"
+
+class Cuerpo():
+    def __init__(self, window):
+        super().__init__()
+
+        self.wind = window
+        self.wind.title("sergi's social media app simulator offline. Created by Sergi Pesaferrer Monterrubio. Open-source")
+        # if os.name == 'nt':
+        #     self.wind.state('zoomed')
+        # else:
+        #     pass
+        #self.wind.minsize(1920, 1080)
+        #self.wind.maxsize(1920, 1080)
+
+        # Función para obtener imagen desde URL (no se utiliza) REQUIERE REQUESTS
+        # def get_image_by_url(url):
+        #     response = requests.get(url)
+        #     image = Image.open(BytesIO(response.content))
+        #     photo = ImageTk.PhotoImage(image)
+        #     return photo    
+
+
+        self.boton_pulsado_verificado = False
+        self.boton_pulsado_menciones = False
+        self.boton_pulsado_social_media_app_simulator = False
+        self.boton_ajuste_notis_toplevel = True
+
+        self.siguiendo_persona1_bot_ = False
+
+        self.siguiendo_generic_doll = False
+        self.siguiendo_browser = False
+
+        self.response_user_msg_persona1_bot__executed = False
+
+
+
+        self.easter_egg_executed = False
+
+
+        
+        self.currently_executing_msg_persona1_bot_ = False
+
+
+        self.logeado = False
+        
+        self.next_row_of_post = 4
+        
+        self.user = {}
+        self.user_actually_loged = []
+        self.nombre_usuario_publico = 'Usuario'
+
+        # MARK: ESTILOS
+        self.titulo_frame_style = ttk.Style()
+        font_size1 = 20
+        buton_font1 = ("Berlin Sans FB", font_size1)
+        self.titulo_frame_style.configure("Title.TLabelframe", font=buton_font1)
+
+        # Esto si que funciona
+        self.espaciado_interno = ttk.Style()
+        font_size = 17
+        buton_font2 = ("Berlin Sans FB", font_size)
+        self.espaciado_interno.configure("Custom.TButton", padding=(0, 10), font=buton_font2)
+
+        self.espaciado_interno_titulo_label = ttk.Style()
+        font_size_titulo_label = 17
+        buton_font_titulo_label = ("Berlin Sans FB", font_size_titulo_label)
+        self.espaciado_interno_titulo_label.configure("Custom.TLabel", padding=(0, 10), font=buton_font_titulo_label)
+        #pading entry usuario (defectuoso)
+        _espaciado_interno_entry_usuario = ttk.Style() 
+        _espaciado_interno_entry_usuario.configure("Padding_entry_usuario.TEntry", padding=(0,0,0,0))
+        
+        self.verification_style = ttk.Style()
+        font_size2 = 14
+        label_font1 = ("Berlin Sans FB", font_size2)
+        self.verification_style.configure('Verification.TLabel', font=label_font1)
+
+        self.verification_style2 = ttk.Style()
+        font_size3 = 12
+        label_font2 = ("Berlin Sans FB", font_size3)
+        self.verification_style2.configure('Verification2.TLabel', font=label_font2)
+
+        self.w_happening_but1_style = ttk.Style()
+        self.w_happening_but1_style.configure("Categoria.TLabel", font=("Arial", 8), foreground='gray51', padding=(5, 0))
+        self.w_happening_but1_style.configure("Nombre.TLabel", font=("Berlin Sans FB", 11), padding=(5, 0))
+        self.w_happening_but1_style.configure("Cantidad.TLabel", font=("Arial", 8), foreground='gray51', padding=(5, 0))
+
+        self.post_style = ttk.Style()
+        self.post_style.configure("Usuario.TLabel", font=("Arial", 8), foreground='gray51')
+        self.post_style.configure("Nombree.TLabel", font=("Berlin Sans FB", 11))
+
+        self.w_happening_but_style = ttk.Style()
+        self.w_happening_but_style.configure("padding.TButton", padding=(20, 20))
+
+        self.mostrar_mas_style = ttk.Style()
+        self.mostrar_mas_style.configure("mostrarMas.TButton", font=('Arial', 10), foreground='SteelBlue1')
+
+        font_size3 = 8
+        tk_style = ("Arial", font_size3)
+
+        self.boton_foto_style = ttk.Style()
+        font_size_boton_foto_style = 14
+        label_font_boton_foto_style = ("Berlin Sans FB", font_size_boton_foto_style)
+        self.boton_foto_style.configure('boton_foto.TButton', font=label_font_boton_foto_style)
+
+        font_size_nombre_post = 7
+
+        Categoria = 'Educación'
+        Nombre = 'Libros'
+        Cantidad = '500 mil posts'
+
+        self.style_focus=ttk.Style()
+        self.style_focus.configure("placeholder.TEntry", foreground="black")
+        self.style_focus.map("placeholder.TEntry",
+          foreground=[("focus", "black"), ("!focus", "grey")])
+        
+
+        # MARK: FRAMES
+        
+        self.menu_frame = ttk.LabelFrame(self.wind, text='menú', style="Title.TLabelframe")
+        self.menu_frame.grid(row=0, column=0, sticky="ns")
+
+        self.posts_frame = ttk.LabelFrame(self.wind)
+        self.posts_frame.grid(row=0, column=5, sticky="ns")
+
+        self.frame_para_ti_o_siguiendo = ttk.LabelFrame(self.posts_frame, text='INICIO')
+        self.frame_para_ti_o_siguiendo.grid(row=0, column=0,sticky='ew') 
+
+        frame_r = ttk.LabelFrame(self.wind)
+        frame_r.grid(row=0, column=10, sticky='ns')
+
+        self.frame_buscar_frame_r = ttk.LabelFrame(frame_r)
+        self.frame_buscar_frame_r.grid(row=0, column=0)
+
+        frame_verification = ttk.LabelFrame(frame_r)
+        frame_verification.grid(row=2, column=0, pady=20, sticky='ns')
+
+        frame_w_happening = ttk.LabelFrame(frame_r)
+        frame_w_happening.grid(row=4, pady=10, column=0, sticky='ns')
+
+        frame_follow = ttk.LabelFrame(frame_r)
+        frame_follow.grid(row=8, column=0, pady=10, sticky='ns')
+
+        self.frame_persona1_bot_ = ttk.LabelFrame(frame_follow)
+        self.frame_persona1_bot_.grid(row=3, column=0, pady=10, sticky='ew')
+
+
+
+
+        self.frame_generic_doll = ttk.LabelFrame(frame_follow)
+        self.frame_generic_doll.grid(row=5,column=0, pady=10, sticky='ew')
+
+        self.frame_browser = ttk.LabelFrame(frame_follow)
+        self.frame_browser.grid(row=6,column=0, pady=10, sticky='ew')
+        
+        self.frame_para_ti = ttk.LabelFrame(self.posts_frame, text='')
+        self.frame_para_ti.grid(row=1, column=0, sticky='ns', pady=0, padx=0)
+
+        
+        
+        
+        
+        
+
+        frame_escribir_post = ttk.LabelFrame(self.frame_para_ti)
+        frame_escribir_post.grid(row=0, column=1, pady=0, padx=0, sticky='ew')
+
+        frame_post_santaclaus_company = ttk.LabelFrame(self.frame_para_ti)
+        frame_post_santaclaus_company.grid(row=2, column=1, pady=0, padx=0, sticky='ew')
+
+        frame_post1 = ttk.LabelFrame(self.frame_para_ti)
+        frame_post1.grid(row=3, column=1, pady=0, padx=0, sticky='ew')
+
+        
+        # Crear los atributos entry_var y place_holder_text
+        self.place_holder_text = 'Buscar en social media app simulator'
+        self.entry_var = tk.StringVar()
+
+        #MARK: IMAGENES
+        
+        #global variables
+        #images encripted in base64
+        verification_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABoAAAAZCAYAAAAv3j5gAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAOnSURBVEhL3ZVfSFNRHMfvnc5ZzTa9c9Kc081d1oqam1uwZanbbKX9gYKyICqIgt4i+kNBUI+RRU9FQUFB9FBGL0FB9NJDhcLSVv5ZTrf5bzbNrGwjdzu/228XF9dl4EP0gcPvd77n3PO758/vHOq/g0abFbPZ7FgsV5zsDYZqilVM35Ili951+NsPYvO8yBpIoynVMQxTNhAdfUiqKSgczXEcxaVURUzX6ODAzunp6Qm+899SWlpa7t2w6a5CtYyDsrSwJEbKqMVqv4VdeORK9Qd5oTokLyoOFxSpB63VjlPYJErGjDQaTdnXJBfGKg83kxozVJY/87e93o0Sj7ygwEzn5t+nOFrGSbg8CSeRqtWqyLepiR1DQ0MR7CZOvWdjEGaxyrqGs1qtdSqVqiSXgM1ZMbDLn8PM19e5r9IElMVJL1d1td2D0l9BAo3A92KBJGgziEYj79FdMIRAlqqqTehSer3egm5WlioLt6M7G65x85YWCQHrPEKlPzr6GKyurIz64xoT5MrijhSde16r099EiYIcI4YOR0eO2h2Oht+DUUbW1Axr27RtBze7ca6A5Xr2ETnafboK4z2UBGrrPNfSY+URUP41o9jHT1fAziS+7UsRwM8huH1Nwx5vw1mop1m12notPvnJxigV/nB/sBllgfH42B2w4XDmCU//Pf/n0jypDCwc6abNW060tbWXtPnfnltfW3cc9Cqb/c5AZGgr6T4zEOoV2x9KoVDowYYjIoGMrOEFWK3OcB2C/CC87exs9dTW3AD9TaD7QqVp5au+UMSbolM/vozHKkAXY4bOOQJ2T/Mu8aVP5xAkKyQqaDqdzlDv8Z7Ba2gYrhu+8xzY1jhb0+PsP3AgY8kF3G7PoXQnlmVXoEzJZLJ803JzI2w+SnNCvk3B9z7fxr1FBJR5hBPW09P9FF2yR1IpulQikfje3fX+8ZeJmAGlbPBLNTX1eXCcwCuIECgajfajS1UaKx3ozhutVmtElwoEAu3oCgiBANhAgLw/N5xOZyOZvYoX5oGeNT0AC2NMEnhxFhmnwuVyuQM9oWdY5SHPRIxhFP5QsMeHEg9rMp8dGYsfJkMoSY4vRpma/hzPTyaTCawKZMzI7/e/tKxgfadOHEOFDJMjYeLxSYvVZj9Jcph/MqpsjtuxsfHTEkmOJh2kZq2Lmvw4TIsFmRO4FeAqIute4XS6+OtJrFy4eGlhb3mS7YXr6hs6YXDIM7jHWlouP8HmfwmK+gm3bT3BJIskEgAAAABJRU5ErkJggg=='
+        captura_perfil_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABwAAAAZCAYAAAAiwE4nAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAL5SURBVEhL7ZXLTxNBHMd3Zlv63kJbti+aAqXlIaWVYBXSKPEAiUaPevIgMR704h/gX2CMF0+euOnNx4WTIT7ixUhCiIpSHsFSHm1pqWkL3XZnnF0HlNDQLcHEGD/JZPL7zi/z3ZmdmR/zzwNorwij0Xgdsw0XWZVqGGBgwAAXeVvzQmp95UIul0vTtONBp9NddjpdMxqNJgohVEdOn7lpsjpyZptTCPQE52ja8WG321+S9lar1UZJKO+M3+8PS6YmiyPfGwwOSVotIO1rIopitihUCqVS6T0JsaTFYrFp3madBwDtZDOZDUmrhWLDQnH7tYgYDcZYoBJZYWAwlUx7GAQqiURigcqHwtK+Jga9oQKA+obL7RpxOp15t7ulf2UtPQ5YprHN63m2sb76gqYeSl2n1OvrnMhmtgaIiVmKschkrFbL3NL87Dk5QQF1GUr0hUJXIKu+hBAura3G76eSyS906O9E8QoHTkXGBEEoMBCOLC7HR5otTZ8xAgiJwsNvy0sTNK0migz7I4NP52OLUQyxmhxsCBAuyAMQN2AMtQyDct4W1/OPM9O3Zf2oeFtbu7kme9Jk5bNS3xcKX/V1dJynwzK9wdAtk4VPkPHVdn/3KyofjY5Azwfykmz5Ok9M6fV6E5Wr0u7vnJQ+rM3f9YZK9TEUPfuAs/JpyYxKNZFMOQuf6gudvEMlZTgcDq+0hVLzeDwBKitC2lpfoOcdDQ9Q9Wkzmxs9DKk/wd6ux/F4vK5K0OptmUimN8PtPt8wlfZR3bDRMkrOL9gu5ieppJjMZvIRmRQaOfM1Ku2j6luqM3D38sUdp9tln+I4zmiz2bxmzsxrNA16RG5euVwu0dQD6HT6JgGBMbVKVc5m0uNU3qPqPZT+HWBhM4PQDqlDcina5VcMftMxmQcgUqYEzEA1BMCERbT2Pbvhogl7VDUMD0SesACq5ckxWRO52cS8gjAuk6iEES6ToV1j4kwUhCuiWCmS8lUGALCkqb7Ofrr7M+c/fwyG+QEYORClGnE99gAAAABJRU5ErkJggg=='
+        config_grande_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABsAAAAaCAYAAABGiCfwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAG6SURBVEhL7ZZBSsNAFIaf4t6NG6HNDRR0obT2BgoKaoO5QUVEKUpvYKl6DFNbj2Ha4saFN2jqPWL+57wyJjNpApKF+MEwj5nJ/Jn3v0m7FMVQSSyrvhT+rlghz4LRmILxhGPPbZLjVDnOSyGxze1dCmczjp1qlT7e3zjOS6aY3x+QP3jhjSGCk3Vu2+RUKnR+eU2NvXrcavH4hPvOTVs9aQFiJp7852h1bf1H2z88VrNRdNd7SM1jLAurGDbGBmA6DbklwdhrMOIea1sXV2rGjLUakRaA1KEQTMWAMaRSfFyEVQw+APgldO8f6eDohAsFsaCvyUSdcA7SsrG1w2kxeSRzaLpH+rwp5SAlJg8lzRYRIB5hTMf2rJD7C8K+qXRJnPQxDD9VZEGJzsFbyyn06pKrYEujVC/mYYUJY+lDEEJ4WPKPHptjU2yoC0ladY9NWO9ZUiwLEbN5JWSU/lhF8GLGLQnG9HVyXawo0RR4S7yt3kwe6Q2+ZrGiNFPIR9XvD8k7a3Lc7X1fZHyIcSL9Q+y5p/E6l+etKNGFwBe9EhEXpdDvGTzyB0OOG/Uan6wI//+ufoUSxYi+ANWxfhXY5qMWAAAAAElFTkSuQmCC'
+        config_peque_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABMAAAASCAYAAAC5DOVpAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF6SURBVDhPrZNfSsNAEMZH8d0XX4QmN1DQB8U/N1BQUBvsDSoiSlF6A0vVY5haPYZpeo4m3iPmm84s020SX/zBkGFnd3bm28lKUUL/RGOyZJJSkk7Z70RtCsOA/VqQrI6tnb1ifWOTDf5fLFQWj8YUj78oDALK8pwr6z/1KGy16ObugY6PDks7KNen/O0/9uSkwClL3uMPV4XaydmFRIviefi6FMeaxSXDQWwAs1nG5oO172TCX+zt3t5LZM6qFMhlA7QGoavExhpahQRVuGTQAUAvZfDyRqfnl7S9u8++YvcsgLL11ao0si9qNbJxlYR00RdTkwDVyB8P/6xr04d1k3bU93XMsh/xBNyqVdjX0VGpa1NfH3FIBXg0kBCJENT+8cVhHMIBm0jbthoDN2d+siY0mb0AmNFIxYMWOZsP1uw+HSeHJOVbcJu1Ko2sQVfLmuR0P208+qTOdZv9wXA+qPjRUZH90TvRVbkv4rhDki4BXexLwm+mKH4BKpmIg++NXgYAAAAASUVORK5CYII='
+
+        flechita_inversa_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABUAAAAWCAYAAAAvg9c4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADRSURBVEhLY/wPBAxUBkxQmqpgGBv66u07KAs3IMnQqzfvMDR0T2OYOn85VAQ7INpQkIFT568Au9TByhQqigOAkhQhcOXG7f/BKYVg/PLNW6gobkDQUFINBAG8hsIMrOueSrSBIIDTUHINBAGcEfXq7Xsw/foN4SSEAaCGYwUw12aWN1PH+zAAMoxUgwmmUzFhIYZpHTVgNijhE5OjiC76QIaBDAWB7MQIBm11FTAbGyA6R4Fc3FCaBWYfOHYaTOMCJBfSIBeDLMAHRkt+agMGBgAyIBcEgb+fDwAAAABJRU5ErkJggg=='
+        flechita_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABUAAAAWCAYAAAAvg9c4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADWSURBVEhLY/wPBAxUBkxQmqpgGBn66u07KIt4gNfQqfOXMzR0TyPZYLyGOliZgmlSDSaYpECGgQwFgYbSLAYxYSEwGx8gGKYgQ0CGgUBWRQtxLga5lBjw8s3b/5nlzf+DUwr/X7lxGyqKHZCUo2BBAaKzEyMZHKFhjg5ITqeiIpAwFRMWBNNYAdi9RACQ9+u6pxLlfaIMBRkIMowYA0GAoKGkGggCeCPq6s07DPU908DJKjsxgkFbXQUqgx/gjagDx06TbCAIEJWjiMlFyGC05Kc2YGAAAI1LhoZCP97SAAAAAElFTkSuQmCC'
+        home_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABwAAAAZCAYAAAAiwE4nAAAACXBIWXMAAA7DAAAOwwHHb6hkAAADKUlEQVR4Xt2W3UsUYRTGd00t7UOiggrdJUqIICGjJNekuumiD4Mka73tJokoTFG66S6/iogg/ANa3fQiyyCKLjIVLOqikkT8aGezSEIWLKUvp9+xeWWaeVd3666Fh5k57znPc86Z876zHk+SP9M0U0FGJGIUcl2UZHjy7k+6e/YeKDlqChDNRdSbPEuCEadOn92ctXrdBzABJsE4tsYEw5Nz27ptZxkCfSBCdS0CS3yMta6boda1yTHO4w1xPzAg7qWlq5QrInnYulkbA+9I4to/iUJyHwyB97SuPh4Za0GEO/AbBAN/JUrgKxAl6zBVbUqEBNFmYt6IKHGHFowh00ycu8BTaeGlhqaKBYM0Dgi3iaiIx423WhLBaQSMIlbqdLZvAbbEvNvB4hnmOgx3i+JKsZGm+3JyRsE4tkxfdvZ3u6Bs+FBL+CLBJiRm3vYC2RYfGZz1caqYgWsQ9Pt8Oc/iVkrv2yGKQVSunBBL4fmxCDkQE1G6scNJKAMEl2vQ7BWqmHRussBiO0nFmXPF8lwUKPS8fN63pfN2+/7g8bK7mLx1DZc7NRX8wBZz2lM1jq4kDCO6UfkhtJT7ado0QLuGunt6A0Y0ukzD8xPblNOuq/Cr5WQqZwg3zN0b0T1er9cUYEuz1nSJa1+bTlCGRTL7piJ2FwUeUM3sYyh86x4Tuk++GHWNV9QmX6lhlyRc/DpBEfosbbOTBE8ca5Jn3peHCX2Ul18wFWoNz7rUVFfqTiHZNq7KdYLSKsFchUJaW32+SoZEVUorldhkTVXlBU2FMnwrnPZ4QyPZzTidb1y/eph2+hHLZ5BKmNhmhueF05ctVMxUy5S7viA6wQwcFVyJ+/2+CMYI77BDFhkeV2KY5YWngbkviyLStXQJi8utAE2nfptESInJkWeDcGaCNSDf+Y/AVSHv6K0QhsJtJ2nNBLcj4JOVhM9qkxBK9rJdsjnyvlg+Ma7TxDYIR1Fg1x1nxq4DmE9R7sEjpa9xlFZNAjVEcpXsJUaG4Y+TSNcKTiQ/r8Cwr2lPfPn+scfqGQy/5axEVazEKdj5Zg8LhukhA1arS+L/t/0CxAJAk5AIk/kAAAAASUVORK5CYII='
+        
+        listas_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABwAAAAZCAYAAAAiwE4nAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANVSURBVEhL5ZbLaxNBHMdnZptH82iT3c2j2tomBGp9Va3WB0q9e5C20KPgQcSjBw/i41/w5kkQCmo9CR4VLAh6slWroCgIpZWaVNM86iZmX/5+4yTGbuJjPfpJJt/d787Od2YzmQwlv4ABFLAB1I2IagSvWwAeoyL8QgtaBiqKEtu+c9epleynk5DGmNQRYpKkSpLUKaq0Ra/VllQ5cvfJ40fnWgW3DOyKJlZAYFjwJsQLHx0wXl6XEssgNrywAiUS+FA4NrXsGtyjw9h9xKJmaS2bENfaM7Jv9CIEfhzaMXxVWH9Nb1//ybCSLCSSPYeE1YAJbQBf1jDq61cvznHDBctLi9PUtnRZjU8Jq4EjkFAGj49Q+L5Q/wmJMZ84bOAIhEpeEJpKpUa+Oy6h0HVKPeKsgSPQ4/FEqMRi0ai8WViugMntI9KfBPp8cVS/3x/iBhCPx9MwCYrdao/ZothhOVmGjvpF9TpUItLvA30+fxI1EAh0cwPQNC0fV5U3qiI/xRJT5LmYLM/H5OgzOJ+Px5S3g4Nbj4jqJJPJHIAlI8g62MZOODl+YtLGXk9MTF4R1l9z8OChKWxj9PDRB8Jq4JylAllR+sQhESsZB5c7BGbxT6AnqsNT8gVRQ+HQEDeaaBs4MDCwBwOwsfHxictdStLCEpYTJpZQNG40lzNnz07XQxVV3YLa6Q84Jl7bwFQqPcKHBKTTmVFhtyX/Ob+EizgeG4ZR42YL2gYiuPjCzcb09I3T/Zti+7H0qN27YpHgtkjQmwl4SF/QS7eg3pm5faEeWNG0Im/gT6hPmpu3ZvjNbhgbO3YK28C2hNXglyN0S6VaKaOWCoXn3GjCEQhPsIL6cmHhPjdcUCwWs6hftPV33GjCEQi9W0SdnX14nRsu+Fqtrlu2uQZTwDF5HIFfK5Ul1FK5tMoNF+RyuffUolXTNDVhNXAEwv/YHKppsWvccEFmcIj/eZcKa/e40UTrLYac0CBZg22CAfsGg1ikYtlWCXYWa8S2yrAsd2E9asMWg9EoIzRgM+KFxsR2AzdYtl3Or/Z+P/9By0Bk996R8+VyZdyybR1+Xjo0YIDWYH9WtUxzHR5X3jD0VV2vfTB0I8ckFvJ6/WlYmCLZleVLopn/DkK+AWbaOqQAQouLAAAAAElFTkSuQmCC'
+        more_options_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABoAAAAZCAYAAAAv3j5gAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAO+SURBVEhL3ZZLbBNHGMd3ZteO7X141/GubfyKYyhOiRHGNIgEUQwFiV4rkKh6KJVQL0hVxQGJI+JY9dATFxAnxAVRVYgD4oAqHlKgDZQkLW1QSngojjeuHzhx7Ky332wG6BJDgrn1Z61mvm/m2/88vtkx878D0XJFEEKCy+XKQLVqGMY48ZnAi3IRIPU3saIQCDgdDkcfiOQ8Hs9+X7fqeTKdjwUDgVmQaYQC6s+N+vy18fGxK5VKpUTDlvFWISrSL8vyCRDa3Wq1Zqv1JmcaDGawiRmT/JA1K031P5Jl/tSd4eHTVvBrvEmIxRh7OI6LK4ryPYhlQOSfWq12hheEa9BY1HX9SSqVyrk8ws6FRrNnYmJyBwlUNf/fDx+MbbXeshIg0u31eo8TkUgkMq2q6k+wbAdpc1u2fDTwlaQE8uRZu37DMHW3hy7VelEUj0Sj0TKIPNM07RLMLEGal3q9neS6D2+C2PTGzdmz1LUcmAloiIeDweDtcDjyDGZ1FER6SNNSj9UhKNqk4FOnREkKUddyJEW979eCozzPH4AZitT9zoiy+me8d+1FatqJRKP9ok97Guvp/Zq6OkbVAntFxf8HNe1LEosnDiETITiBj6mrYwoz+SuwrcaaNWErG21C+cLs9hZqGVOPJi9T13tiYqdbOE5qNqGZwkwYDmCTmhZuSbkQCse+o6aFIKu/iYo6Rk0LQfbf4r3dI9S0MEEHEsxF6jYhOOIGrb6EY7lUda7+GTWXwEgyEWNLFMQgP2JZhZpLYNOp68UUtV6xIb3pB0jL994fQigU+oCcp+zANivzbDNqGc2rMDKc2Zz9gro6Jt7TewgKLHulKiwftglVyqUxyDq2+rz+DXV1jD5b+gSxWO1ycHfhPCL7HpkMSQQ8U9DjuV27rWzphG2DQ0cKxeIWUh8dvf8j3F/2vSfKg0NDn3v9ocW+dLbUn04P0qZ3QvIF5uAdJgz2MHUth4jt2vPpFOmYzgyY8NXmadOq2JjJnoHY5tCO3C3qsmj7RU4mkym9PPc7qceiUcaBW1+O/PrLeRgDD7d2HUoOmlioz5MS6Ib7qsxLvmETIzf4zOfFQpzEv6CtEJlVIpFY15fOPLh+46blEz1dFyul4nVY7gK8WIEu7mazOUHE3W73noXGYsFgUHKhVjkIfeasoP+w4h3z8c7csZF749+yLJrv4pg8JCo5lC14SOwi/V/yV7lcPtloNO6RmHas6jIjOJ3OLIx8X71ev8pgNuER5XO1kr6JNjtA7CG57qn9GgzzL7AwNw7InubpAAAAAElFTkSuQmCC'
+        msg_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANXSURBVEhL7ZZLTBNBGMdnZtttYWlpaSmPosESohgrIA8FAY0HNUZNBOPRu8SDiQSVg2cTLx70gAcTYzx4MEYvxsSD8ZWYKIkJPlaKPLQIpbSQ7WOX7sNvl7HpBppohRu/tDv/+fbr/nd2Z74p2mS9wbTNsqel5VC1f+vgfDRKJEmMyLIsIE1TESYWgjGD4UtTDQgmLGGIDRNswYhYoSUMwxQ7SrjIGP9laGJiYoymGqwydJRVJCGsYayKGiIsmJkM4AdYQwg+Rk+XmICvcYogrKo4QwjmVs4jVOlxBnmeH6VdM7sbG884Pb6FlvZ9D7ds2Rqk4X+CZdmipqbmY8Hmdq3UW6WdO3+B3twaBOobXoBhNBAItNJQwbS2tZ3SDXVjeA3ZJ6k/iiyqqiSRiuWZmZmvNFQwyWQyTqUJk6GmIUVvRFFMrEQKJ51KLVGJ8o6QEGTDDPE53RW/cpMKIbaUfkZlfkOEGDscCJhWOt2+tMPlC63E/55ip/uJPg9o14AAVJoN4T5YVVMW6wK1j7zl3o+IaHYY7SxX6hnBhFhp2prYOecw5H0ghKn2uN0jwV077tNT+Q1hzcLiZlycnX08zn/aK8Tma8q9rhuwropKXL5YSVn5VF399ks0HVVW+/v0m9FfAWNhaottlqHEYrR1IsQfzkjia5pmwmSo6UsXqPH7dxoBYHyMvybEow1Oju2HBCWysHjVUVYplHorpJSUua2PPCMJTcml+JH5yFz2vdntdgeVSAGoNBtarJYKvT1+4uSgEcgh/GP6XiIeCbgdRac97tI3iqLN+Mpc/Yn4fBBm5BxNy1LMcS4qTZgMWavNT2Vepqcmn06O80fBfFto7NsDGl4FlF+VStCw4Cgmw/VEEATTTP3DhhmKaVGg0sSGGeaWtryPVIViSuV/A0svu63lGprKV8f+7uuf+dBA1/5O1NO5d/Tlq5d3Ywuxn9KylJIzspQ7EfR6pV9JhQ+GDmzUy6KYFmZn50KZzLLY3tH1/PPXbz2XBy+iK4MDWZ9V9VLfUqhcF+4M33rT19fbRburDXW6Dxy8abNxvYjB1lQi+V2WMzFFkVMwQBkGpUABWLkp+GNgbHb6AUoUXMy4HlQdR1VVtf39u7dnw+HwlJG7ySaFgdBvyvM+VA79KIsAAAAASUVORK5CYII='
+        notifications_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABwAAAAZCAYAAAAiwE4nAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAMFSURBVEhL3ZVLTBNBGMd3W9pt6dItbaF1aZu0UKi22Ehti1BeiSAJCWKQxMhVrybGxHjmRExMPBhvHjUGUSHRxJORIMbEEOIrEHlsKURAoQ2vslv6cGc6HJaWlq0X4y+Z/L/5z7f5ZnZ2ZrH/HhxpTmi6wmKz2ZrlCoWVZWOdGI6nCLl8Nr7PvWMW5seWl5eDKDUveQt6/f7rP+ZDD/mwKO0IoWljREuRAxPj4/eRlZOcBT3e+uE5ZrGXD/f1Ou2UWqV4kEwm46srK59ok/ny1k60b30jXAdydaWasYXZ6VYQF4THd+4lpT+RKtEZt5wu1yVkZ0VdalgDuVZbVc68Iwk0Nd+ExbTGHWTl5aAo6h6JBKmAX+vha7wkDLqSnrSTn63ImgGoxWYfgcZx8fvr+8BMwYyRdWxIbVmIfzaOulnJWKGMUDQBPemoegQNESTZaAsvUjVFVaSdTDIKclzMCnQzEn4DDRFEo7sMUP7Y3oBGFjIKbm/v1gKVFkll0CgAluVOoTA/YP9AIwhCgSxRoP1fRd0MBCukadqMQv7VciwKRZFKJvdSOE6ibgaCgjU1jgsoLBhjeVlQIsHlbrcbfnyHERSUSKXwvvT5zkagUQCUhlrgRUZRmsq0I0RQUEWSTqBKgviC80BTJOoSyg209Xx71stc8AdIJLFqoEww1NLd0/uWi3Gbif0EG0/E9/j6EmWxspxj2TCWSsErDPgxLrYpkxNqklRV8MVs36ZnTGBscnKKAnoYwSoaAi0T32d+NKDuXxFobMBejz7PeEsCw2Q2u5yu2n7wC+IHcBmh9L7/8LEDjHnrTg9YbZWtFovFt/F7fY6i1CZFcbFm8O49+Oyd27egHmAxmbD+q1fEbYterzfUnvHBc9nR2TWEbIiTp+tiLxwDbZAHDeUk7wzqPJ7u+cWfoyC2mM1YW1vga5m+3DH07IUstLQEc16NDGNNgUZxq8mF3V7dfrCSw+3xk6cpGQ9KzYuoWdlrHP1KpaqNP64kpVZ9XgwywwzDzKLhfxEM+wPxPeq9+XXcCgAAAABJRU5ErkJggg=='
+        profile_big_encripted = 'iVBORw0KGgoAAAANSUhEUgAAACMAAAAoCAMAAABDwLOoAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAADnUExURa+4vq63vbG5v7nBxsHIzsTL0LrBx9LY3OTo6+zv8u7x9MDHzOLl6fP1+PX3+rvDyOTn6/T2+bK7wdjc4cHIzezv8/X2+bC5v9LX3LO8wt3i5ra+xOPn6+To7LW9w+Hl6bG6wNfd4cnP1PHz9rjAxePn6sfO0rK7wM/V2rO7wcrQ1eXo7LrCx9bb39ne4sPKz87U2Nbc4Nje4r/HzNTa3ubq7e/y9fL0+Oru8fX3+b/Gy+Dk6PL1+LzDydzg5LC5vszT1/Dz9s/V2ePm6sPJz6+5vtDW2tvf47a+w7jAxufq7uns7/////XZPbMAAAABYktHREz3bxDzAAAAB3RJTUUH5wkIFRI0TJwu+QAAAVFJREFUOMvN02mfgVAUBvCSUeJeriVLhigiGQwh+75+/+8zk0Hh3F7P8/r/6zydUwzzv8M68RcBLvgR5AJ+KsQLYTEs8CE6iUQRdoKiERqJxck98RhMEkniJpkA+6bS0oNI6RTUO5NFnuegbAYwuTz2GJzPAaPkwpMpyCxgPp+MAJli6cmUikBppUy8KSvQy1dUD1Er4A61qjsMVzV40TXxjrBYo9xLr98QFus67agNo6kSTNSm0WDoMY3WV8swfYSitTvd726nrSkwYPVe3xoMEULDgdXv6dDdOX5E7Nt72WTEc+9kPJk+3WI6Gb+SSJO8pvnyUc8E8h5h5iXynECZyy5ZLFegWS0X7uYsDBpsudtcIwIHrR9tNphi8ObWiN2KEsVI4vZv3bs9bdTvsP3uahIHm2rsw/WfZo/UOk6hozOMPZ19zPl0NebFx1xMlvkBCSY6i4zNmg8AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjMtMDktMDhUMjE6MTc6NTUrMDA6MDCdxjFyAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIzLTA5LTA4VDIxOjE3OjU1KzAwOjAw7JuJzgAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyMy0wOS0wOFQyMToxODo1MiswMDowMI8izRIAAAAASUVORK5CYII='
+        profile_uno_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJySURBVEhLvZVLaxNRFMfPuZNHm5igFhVDKVpcxtiWCJWupCvBlTQihZgwwWJwpd8gX0DcSCEu+kCC4AcQd+1CEITUZlEQCq1S8IFiIT4y6cw9nkkPRZlMEkrqD8I9/3Mn58/ce+4d+B+gjF0hIszn82eCWsdxYKCeSCQ+l0olLdMd6WriFjfN29MK1HUiGJI0IOJ3DfrFyMj5l93MOppkMhkjfixyj4tflpQXBbVAIPyoXC7vScaDkrEt8Wj0RkcDFw0p27JuiWqLr4lpmjECuiayMwqmC4XCSVEefE3QcVI8BPdVFwgMsu1xUR78TZQ6K2GvnJLRg68Jd5UlYU9wtzUl9OC/8Y6zKVFPkONsSejB12R4dPQdb/xHkV2gr/VGoybCgyGjh9XVVUqnU++B1BRL/zfmJtagHlcqlU+iPfiauFSrtW9j48ltXvEUAoYk/Rf0CxTNLywsv5VEWzqa3J+ZGZyvPNtJJi+uGAH1A4itEPYQaIffbcVqOk+Wl59uuc+93tiw5W8e2l4ruVzuOLtnuNAUadjmh96AYWyGw40v9bpqxmI6ZFkDp7k7Lrg3As+f45P/ygF4vrS0tCtlDvCY8E07oZDm+IBFJdU7CD81YXlxcbEqmRb/LBfftlcVYJEN2qx/T4QU4uT4RGp3bW2d93KfAxPTzKaRjLvu1S6pw4IEaiydvvShWl1vHYFWaxaLsydA450+GLRArqNtmpud5bpMy6T5O3STpyJu3D8wMhhy63KUzWaHgoZ6yHGnA3c4EBxUgQcqGFSTLPtv4OJ+Asi+okBTUlJHA9fnjsVhkUcD13eXKcbfAjqqHwDE/gAggd2dx830LAAAAABJRU5ErkJggg=='
+        saves_encripted = 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAZCAYAAAArK+5dAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANjSURBVEhLtZbbSxRRHMfnvjPO7uzOqqOrKaYiLhVhaIaJRUoUURIZSCL1GvjQQ75HRQ9B9Af0IIEE0YV6qJeCELyDFEZG99JSdMvLmuuuuzPT+Z09O+44GrtBH1h+5/c9M/s9l985u9T/hiYRw7JsqaYVtMYTCe1naO4Sx3HFhmEsk+6NmKRPT6abYzPw5gVM3YjP0zodp2hjzuuW1EQi8QV9kYm6w8mnksCXRyLRFZNm6zhOKFQ88scf3782km4Ly8Dvzz2tM0yvx+19E14IXVsOh1/IsnyOYRgBdTtGaZpmOBaLffAoSqmaq10N/VooClaV3xkeHOggj9jZXl5xU/bnzxcGAl1EypiKysrLMPvzXRdgprZVYUiEERmMYSbWYmtLRMoYtIxR0nRgM4Co6/qWD28FemcN4moksoqFNCwDNC88NbLmWZEyiEZXHBW3bsCwnMlQrCAICpEyBhnEIK6uxLY2YFiaYxnezwu8TKSM0ckeoKr9jYU0LAOO4yWILMu5sJAFqHSgeqh4LB7BQhqWgSjl+CAKAp+DhSxA+8ZDTJiG47xYBorbUwDRJbjcWMiClAFt4hNvwzLw5aoBiKIoZb3JyICDqJsmzMBmYhkU5mvbIMqKR8VCFqBLUYRooFsSC2msb7Ig4vr3KoofCxtAowygTyFJbfC8gCuPZmnbNQFYBim8infjDGifz3fU4y+Y3rG7dqY6GLwOWrIriegS8bJyLOc4pCkD64Wi4uIS0gTYtvb2UZOTnkIyOTVFzYQWu+vq63tQag1OlFzYwCWKjjPkmIFPVb0QJUnac6z1VOLZ875ayBv3N1AnTxzHd837T5Nnd9Xs1Xmer4JcknJw5THoEKFgm53DAAgGg92C7BvrHxjEefPBxpEnjx8wt3tuFVdXlvWCBrOp3lnz7sCh5kcMm6wigePxZqfjMOgfGKKmQ4uwzlRpSQklskb7w/v39qEUXbjmwsjwUOfKYqgC+sDk1fhE69JytA2edyseR4FsYpAcNSzJ65ej3Ozs7F0spIHu/88T42NlRZp6A3IwAlQ1Nw830kgZ2A5HU0NdH1oSFjW3/EFHN+i3txMTF/N88hUi/Z2Ww0fG0MaZiqK0EClj0L+REni3/UzHLEodZwGjaVonaf4zstvdRJoEivoDTzMUlOdM4HAAAAAASUVORK5CYII='
+        
+        
+        #desencriptar
+        verification_decoded = base64.b64decode(verification_encripted)
+        captura_perfil_decoded = base64.b64decode(captura_perfil_encripted)
+        config_grande_decoded = base64.b64decode(config_grande_encripted)
+        config_peque_decoded = base64.b64decode(config_peque_encripted)
+        flechita_decoded = base64.b64decode(flechita_encripted)
+        flechita_inversa_decoded = base64.b64decode(flechita_inversa_encripted)
+        home_decoded = base64.b64decode(home_encripted)
+        listas_decoded = base64.b64decode(listas_encripted)
+        more_options_decoded = base64.b64decode(more_options_encripted)
+        msg_decoded = base64.b64decode(msg_encripted)
+        notifications_decoded = base64.b64decode(notifications_encripted)
+        profile_big_decoded = base64.b64decode(profile_big_encripted)
+        profile_uno_decoded = base64.b64decode(profile_uno_encripted)
+        saves_decoded = base64.b64decode(saves_encripted)
+        
+        #convert to a virtual fyle inside memory
+        verification_bytes = io.BytesIO(verification_decoded)
+        captura_perfil_bytes = io.BytesIO(captura_perfil_decoded)
+        config_grande_bytes = io.BytesIO(config_grande_decoded)
+        config_peque_bytes = io.BytesIO(config_peque_decoded)
+        flechita_bytes = io.BytesIO(flechita_decoded)
+        flechita_inversa_bytes = io.BytesIO(flechita_inversa_decoded)
+        
+        home_bytes = io.BytesIO(home_decoded)
+        
+        listas_bytes = io.BytesIO(listas_decoded)
+        more_options_bytes = io.BytesIO(more_options_decoded)
+        msg_bytes = io.BytesIO(msg_decoded)
+        notifications_bytes = io.BytesIO(notifications_decoded)
+        profile_big_bytes = io.BytesIO(profile_big_decoded)
+        profile_uno_bytes = io.BytesIO(profile_uno_decoded)
+        saves_bytes = io.BytesIO(saves_decoded)
+        
+        #convert bytes to pillow img
+        verification_pil = Image.open(verification_bytes)
+        captura_perfil_pil = Image.open(captura_perfil_bytes)
+        config_grande_pil = Image.open(config_grande_bytes)
+        config_peque_pil = Image.open(config_peque_bytes)
+        flechita_pil = Image.open(flechita_bytes)
+        flechita_inversa_pil = Image.open(flechita_inversa_bytes)
+        home_pil = Image.open(home_bytes)
+        listas_pil = Image.open(listas_bytes)
+        more_options_pil = Image.open(more_options_bytes)
+        msg_pil = Image.open(msg_bytes)
+        notifications_pil = Image.open(notifications_bytes)
+        profile_big_pil = Image.open(profile_big_bytes)
+        profile_uno_pil = Image.open(profile_uno_bytes)
+        saves_pil = Image.open(saves_bytes)
+       
+        #convert pil img to tkinter img
+        
+
+
+        verification_tk = ImageTk.PhotoImage(verification_pil)
+        captura_perfil_tk = ImageTk.PhotoImage(captura_perfil_pil)
+        config_grande_tk = ImageTk.PhotoImage(config_grande_pil)
+        config_peque_tk = ImageTk.PhotoImage(config_peque_pil)
+        flechita_tk = ImageTk.PhotoImage(flechita_pil)
+        flechita_inversa_tk = ImageTk.PhotoImage(flechita_inversa_pil)
+        home_tk = ImageTk.PhotoImage(home_pil)
+        listas_tk = ImageTk.PhotoImage(listas_pil)
+        more_options_tk = ImageTk.PhotoImage(more_options_pil)
+        msg_tk = ImageTk.PhotoImage(msg_pil)
+        notifications_tk = ImageTk.PhotoImage(notifications_pil)
+        profile_big_tk = ImageTk.PhotoImage(profile_big_pil)
+        profile_uno_tk = ImageTk.PhotoImage(profile_uno_pil)
+        saves_tk = ImageTk.PhotoImage(saves_pil)
+        #global variables
+        self.home_img = home_tk
+        self.notifications_img = notifications_tk
+        self.msg_img = msg_tk
+        self.listas_img = listas_tk
+        self.saves_img = saves_tk
+        self.verification_img = verification_tk
+        self.profile1_img = profile_uno_tk
+        self.more_options_img = more_options_tk
+        self.profile2_img = profile_big_tk
+   
+
+        self.post1_img = profile_uno_tk
+        self.config_busqueda_explorar_img = config_peque_tk
+        self.flechita_img = flechita_tk
+        self.flechita_inversa_img = flechita_inversa_tk
+
+
+        #self.save_img = PhotoImage(file=ruta_imagenes23)
+        # MARK: BOTONES
+        #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # Boton invisible
+        self.boton_invisible = ttk.Button(self.menu_frame)
+        self.boton_invisible.grid(padx=60, row=0, column=0)
+        self.boton_invisible.config(state='disabled')
+
+        # MARK: BOTONES MENU FRAME
+
+        self.home = ttk.Button(self.menu_frame, image=self.home_img, compound='left', text='Inicio', style="Custom.TButton", command=self.home_boton)
+        self.home.grid(row=0, column=0, pady=5, sticky="ew")
+
+        self.explore = ttk.Button(self.menu_frame,  compound='left', text='Explorar', style="Custom.TButton", command=self.explorar)
+        self.explore.grid(row=1, pady=5, column=0, sticky="ew")
+
+        self.notifications = ttk.Button(self.menu_frame, image=self.notifications_img, compound='left', text='Notificaciones', style="Custom.TButton", command=self.notificaciones)
+        self.notifications.grid(row=2, pady=5, column=0, sticky="ew")
+
+        self.msg = ttk.Button(self.menu_frame, image=self.msg_img, compound='left', text='Mensajes', style="Custom.TButton", command=self.pulsar_boton_msg)
+        self.msg.grid(row=3, pady=5, column=0, sticky="ew")
+
+        self.listas = ttk.Button(self.menu_frame, image=self.listas_img, compound='left', text='Listas', style="Custom.TButton", command=self.press_list_button,)
+        self.listas.grid(row=4, pady=5, column=0, sticky="ew")
+
+        self.saves = ttk.Button(self.menu_frame, image=self.saves_img, compound='left', text='Guardados', style="Custom.TButton",command=self.ventana_emergente_prueba)
+        self.saves.grid(row=5, column=0, pady=5, sticky="ew")
+
+        self.verification = ttk.Button(self.menu_frame, image=self.verification_img, compound='left', text='Verificado', style='Custom.TButton',command=self.ventana_emergente_prueba)
+        self.verification.grid(row=6, column=0, pady=5, sticky='ew')
+
+        self.profile1 = ttk.Button(self.menu_frame, image=self.profile1_img, compound='left', text='Perfil', style='Custom.TButton',command=self.ventana_emergente_prueba)
+        self.profile1.grid(row=7, column=0, pady=5, sticky='ew')
+
+        self.more_options = ttk.Button(self.menu_frame, image=self.more_options_img, compound='left', text='Más opciones', style='Custom.TButton', command=self.press_mas_opciones)
+        self.more_options.grid(row=8, column=0,pady=5, sticky='ew')
+        if self.logeado == True:
+            self.profile2 = ttk.Button(self.menu_frame, image=self.profile2_img, compound='left', text=self.nombre_usuario_publico, style="Custom.TButton",command=self.usuario)
+        else:
+            self.profile2 = ttk.Button(self.menu_frame, image=self.profile2_img, compound='left', text='Usuario', style="Custom.TButton",command=self.usuario)
+        self.profile2.grid(row=9, column=0,pady=390, sticky="ew")
+
+        #MARK: BOTONES POSTS FRAME
+        self.estilo_para_ti1 = Font(family='Berlin Sans FB', size=14, weight='bold')
+        self.estilo_siguiendo1 = Font(family='Berlin Sans FB', size=14)
+        self.para_ti_button = tk.Button(self.frame_para_ti_o_siguiendo, text='Para ti', command=self.para_ti, font=self.estilo_para_ti1)
+        self.para_ti_button.grid(row=0, column=0, padx=315, sticky='ew')
+        self.siguiendo_button = tk.Button(self.frame_para_ti_o_siguiendo, text='Siguiendo', command=self.siguiendo, font=self.estilo_siguiendo1)
+        self.siguiendo_button.grid(row=0, column=1, padx=315, sticky='ew')
+
+        
+
+        # self.pad_invisible2 = ttk.Label(self.frame_para_ti)
+        # self.pad_invisible2.grid(padx=710, pady=700)
+        # self.pad_invisible2.configure(state='disabled')
+        #publicar post
+        self.foto_escribir_post = ttk.Label(frame_escribir_post, image=self.profile2_img)
+        self.foto_escribir_post.grid(row=0, column=0, padx=10, pady=0)
+        self.entry_escribir_post = ttk.Entry(frame_escribir_post)
+        self.entry_escribir_post.grid(row=0, column=1, padx=0, pady=20, sticky='ew')
+        self.pad_escribir_post_invisible = tk.Label(self.entry_escribir_post)
+        self.pad_escribir_post_invisible.grid(padx=680, pady=0)
+        self.pad_escribir_post_invisible.configure(state='disabled')
+        self.boton_publicar_post = ttk.Button(frame_escribir_post, image=self.flechita_img, style='Custom.TButton', command=self.publicar_post)
+        self.boton_publicar_post.grid(row=0, column=2, padx=0, pady=0)
+
+        #santaclaus_company
+        self.post_foto_santaclaus_company = ttk.Label(frame_post_santaclaus_company)
+        self.post_foto_santaclaus_company.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        self.post_nombre_santaclaus_company = ttk.Label(frame_post_santaclaus_company, text='santaclaus_company', style='Nombree.TLabel')
+        self.post_nombre_santaclaus_company.grid(row=0, column=1, padx=0, pady=0)
+        self.post_nombre2_santaclaus_company = ttk.Label(frame_post_santaclaus_company, text='@santaclaus_company_oficial', style='Usuario.TLabel')
+        self.post_nombre2_santaclaus_company.grid(row=0, column=2, padx=0, pady=0)
+        self.post_santaclaus_company = ttk.Label(frame_post_santaclaus_company, text='----')
+        self.post_santaclaus_company.grid(row=1, column=1)
+        self.post_santaclaus_company2 = ttk.Label(frame_post_santaclaus_company, text='¡Prueba nuestro nuevo software para repartir regalos desde nuestros trineos\n Tan solo pulsa el botón para abrirlo y dale regalos a quien quieras (solo para personas autorizadas).')
+        self.post_santaclaus_company2.grid(row=1, column=3)
+        self.post_santaclaus_company3 = ttk.Label(frame_post_santaclaus_company, text='----------->')
+        self.post_santaclaus_company3.grid(row=1, column=2)
+        self.christmas_pressent_delivery_button = ttk.Button(frame_post_santaclaus_company, text='santaclaus_company christmas present delivery launching softwar', command=santaclaus_company_balistik)
+        self.christmas_pressent_delivery_button.grid(row=1, column=4, padx=0)
+
+        self.post1_foto = ttk.Label(frame_post1, image=self.post1_img)
+        self.post1_foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        self.post1_nombre = ttk.Label(frame_post1, text='Usuario', style='Nombree.TLabel')
+        self.post1_nombre.grid(row=0, column=1, padx=0, pady=0)
+        self.post1_usuario = ttk.Label(frame_post1, text='@usuario', style='Usuario.TLabel')
+        self.post1_usuario.grid(row=0, column=2, padx=0, pady=0)
+        self.post1 = ttk.Label(frame_post1, text='-------')
+        self.post1.grid(row=1, column=1)
+        self.post1_2 = ttk.Label(frame_post1, text='------->')
+        self.post1_2.grid(row=1, column=2)
+        self.post1_real = ttk.Label(frame_post1, text='Esto es un post de ejemplo') 
+        self.post1_real.grid(row=1, column=3)
+
+        
+        #MARK: BOTONES frame_r
+        self.buscar = ttk.Entry(self.frame_buscar_frame_r, textvariable=self.entry_var, style='placeholder.TEntry')
+        self.buscar.insert(0, self.place_holder_text)
+        self.buscar.bind("<FocusIn>", self.entry_focus_in)
+        self.buscar.bind("<FocusOut>", self.on_entry_focus_out)
+        self.buscar.grid(row=0, column=0, pady=5, padx=0, sticky="ew")
+        self.enter_buscar_frame_r = ttk.Button(self.frame_buscar_frame_r, image=self.flechita_img, command=self.pulsar_boton_buscar_frame_r)
+        self.enter_buscar_frame_r.grid(row=0, column=1)
+
+        self.verification_label = ttk.Label(frame_verification, text='Obtener verificación ✅', style='Verification.TLabel')
+        self.verification_label.grid(row=3, column=0, padx=30, sticky="ew")
+
+        self.verification_label2 = ttk.Label(frame_verification, text='Suscríbete para desbloquear nuevas funciones')
+        self.verification_label2.grid(row=4, column=0,sticky='ew')
+
+        self.w_happening_label = ttk.Label(frame_w_happening, text=' tendencias', style='Verification.TLabel')
+        self.w_happening_label.grid(row=7,column=0, padx=30, sticky='ew')
+
+        self.w_happening_but1 = ttk.Button(frame_w_happening, style="padding.TButton",command=self.ventana_emergente_prueba)
+        self.w_happening_but1.grid(row=8, column=0, pady=10, sticky='ew')
+
+        self.w_happening_but2 = ttk.Button(frame_w_happening, style="padding.TButton",command=self.ventana_emergente_prueba)
+        self.w_happening_but2.grid(row=9, column=0, pady=10, sticky='ew')
+
+        self.w_happening_but3 = ttk.Button(frame_w_happening, style="padding.TButton",command=self.ventana_emergente_prueba)
+        self.w_happening_but3.grid(row=10, column=0, pady=10, sticky='ew')
+
+        self.w_happening_but4 = ttk.Button(frame_w_happening, style="padding.TButton",command=self.ventana_emergente_prueba)
+        self.w_happening_but4.grid(row=11, column=0,pady=10, sticky='ew')
+
+        self.w_happening_but5 = ttk.Button(frame_w_happening, style="padding.TButton",command=self.ventana_emergente_prueba)
+        self.w_happening_but5.grid(row=12, column=0, pady=10, sticky='ew')
+
+        label_categoria = ttk.Label(self.w_happening_but1, text="Educación", style="Categoria.TLabel")
+        label_categoria.grid(row=0, column=0, sticky="ew")
+        label_nombre = ttk.Label(self.w_happening_but1, text="libros -", style="Nombre.TLabel")
+        label_nombre.grid(row=1, column=0, sticky="ew")
+        label_cantidad = ttk.Label(self.w_happening_but1, text="500 mil posts", style="Cantidad.TLabel")
+        label_cantidad.grid(row=2, column=0, sticky="ew")
+
+        label_categoria2 = ttk.Label(self.w_happening_but2, text='Informática', style="Categoria.TLabel")
+        label_categoria2.grid(row=0, sticky='ew')
+        label_nombre2=ttk.Label(self.w_happening_but2, text='como programar en python', style='Nombre.TLabel')
+        label_nombre2.grid(row=1, sticky='ew')
+        label_cantidad2 = ttk.Label(self.w_happening_but2, text='344 mil posts', style="Cantidad.TLabel")
+        label_cantidad2.grid(row=2, sticky='ew')
+
+        label_categoria3 = ttk.Label(self.w_happening_but3, text='Política', style="Categoria.TLabel")
+        label_categoria3.grid(row=0, sticky='ew')
+        label_nombre3=ttk.Label(self.w_happening_but3, text='Donden dinero a chaco_seco', style='Nombre.TLabel')
+        label_nombre3.grid(row=1, sticky='ew')
+        label_cantidad3 = ttk.Label(self.w_happening_but3, text='875 mil posts', style="Cantidad.TLabel")
+        label_cantidad3.grid(row=2, sticky='ew')
+
+        label_categoria4 = ttk.Label(self.w_happening_but4, text='Denuncias', style="Categoria.TLabel")
+        label_categoria4.grid(row=0, sticky='ew')
+        label_nombre4=ttk.Label(self.w_happening_but4, text='Coche mal aparcado', style='Nombre.TLabel')
+        label_nombre4.grid(row=1, sticky='ew')
+        label_cantidad4 = ttk.Label(self.w_happening_but4, text='2 millones de posts', style="Cantidad.TLabel")
+        label_cantidad4.grid(row=2, sticky='ew')
+
+        label_categoria5 = ttk.Label(self.w_happening_but5, text='Geo-política', style="Categoria.TLabel")
+        label_categoria5.grid(row=0, sticky='ew')
+        label_nombre5=ttk.Label(self.w_happening_but5, text='Legitimidad estatal Israel', style='Nombre.TLabel')
+        label_nombre5.grid(row=1, sticky='ew')
+        label_cantidad5 = ttk.Label(self.w_happening_but5, text='122 mil posts', style="Cantidad.TLabel")
+        label_cantidad5.grid(row=2, sticky='ew')
+
+
+        self.mostrar_mas = ttk.Button(frame_w_happening, text='Mostrar más', style="mostrarMas.TButton", command=self.explorar)
+        self.mostrar_mas.grid(row=13, column=0, padx=30, pady=5, sticky='ew')
+
+
+
+        categoria = "Educación"
+        nombre = "libros -"
+        cantidad = "500 mil posts"
+
+        self.follow_label = ttk.Label(frame_follow, text='A quién seguir', style='Verification.TLabel')
+        self.follow_label.grid(column=0,row=0, padx=50, sticky='ew')
+
+        self.persona1_bot_ = tk.Button(self.frame_persona1_bot_)
+        self.persona1_bot_.grid(row=0, sticky='ew', column=0, rowspan=2)
+
+        self.hiltler_label = tk.Label(self.frame_persona1_bot_, text='Persona1_bot_✅', font=label_font2)
+        self.hiltler_label.grid(row=0, sticky='ew', column=3, padx=0, pady=0)
+        self.persona1_bot__label2 = tk.Label(self.frame_persona1_bot_, text='@persona_1_bot_', font=tk_style)
+        self.persona1_bot__label2.grid(row=1, sticky='ew', column=3, padx=0, pady=0)
+        self.persona1_bot__follow = tk.Button(self.frame_persona1_bot_, text='Seguir', compound='right', command=self.pulsar_boton_seguir_persona1_bot_)
+        self.persona1_bot__follow.grid(row=1, column=5, padx=40, sticky='ew')
+
+
+
+
+
+
+
+
+
+
+        self.generic_doll = tk.Button(self.frame_generic_doll,  command=self.ventana_emergente_prueba)
+        self.generic_doll.grid(row=0, column=0, sticky='ew', rowspan=2)
+        self.generic_doll_label = tk.Label(self.frame_generic_doll, text='generic_doll✅', font=label_font2)
+        self.generic_doll_label.grid(row=0, sticky='ew', column=3, padx=0, pady=0)
+        self.generic_doll_label2 = tk.Label(self.frame_generic_doll, text='@generic_doll_official', font=tk_style)
+        self.generic_doll_label2.grid(row=1, sticky='ew', column=3, padx=0, pady=0)
+        self.generic_doll_follow = tk.Button(self.frame_generic_doll, text='Seguir', command=self.pulsar_boton_seguir_generic_doll)
+        self.generic_doll_follow.grid(row=1, column=5, padx=40, sticky='ew')
+
+        self.browser = tk.Button(self.frame_browser,  command=self.ventana_emergente_prueba)
+        self.browser.grid(row=0, column=0, sticky='ew', rowspan=2)
+        self.browser_label = tk.Label(self.frame_browser, text='browser✅', font=label_font2)
+        self.browser_label.grid(row=0, sticky='ew', column=3, padx=0, pady=0)
+        self.browser_label2 = tk.Label(self.frame_browser, text='@browser', font=tk_style)
+        self.browser_label2.grid(row=1, sticky='ew', column=3, padx=0, pady=0)
+        self.browser_follow = tk.Button(self.frame_browser, text='Seguir', command=self.pulsar_boton_seguir_browser)
+        self.browser_follow.grid(row=1, column=5, padx=40, sticky='ew')
+
+    #MARK: FUNCIONES
+    
+    def entry_focus_in(self, event):
+        if self.entry_var.get() == self.place_holder_text:
+            self.entry_var.set("")
+        
+
+    def on_entry_focus_out(self, event):
+        if self.entry_var.get() == "":
+            self.entry_var.set(self.place_holder_text)
+        
+    
+
+    def para_ti(self):
+        self.estilo_para_ti23452353252345235 = Font(family='Berlin Sans FB', size=14, weight='bold')
+        self.estilo_siguiendo223453523452355 = Font(family='Berlin Sans FB', size=14)
+        try:
+            self.para_ti_button.config(font=self.estilo_para_ti23452353252345235)
+            self.siguiendo_button.config(font=self.estilo_siguiendo223453523452355)
+        except:
+            print(' ')
+            print('AÑWFJÑASDKFJKÑASODFJAÑSODKJSAÑFJKASDFJASÑDFJDSAFSJÑD')
+        try:
+
+            self.frame_para_ti.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_para_ti')
+        try:
+            self.frame_para_ti2.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_para_ti2')
+        try:
+            print(' ')
+            self.frame_siguiendo2.destroy()
+        except:
+            print('INFO: no se ha encontrado self.frame_siguiendo2')
+        
+        try:
+            self.aviso_home.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.aviso_home')
+        try:
+            self.frame_explorar.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.explorar')
+        try:
+            self.frame_categorias_titulo_config_notificaciones.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_categorias_titulo_config_notificacion')
+        try:
+            self.frame_usuarios_para_mensagear.destroy()
+        except:
+            print(' ')
+            print('INFO: self.frame_usuarios_para_mensagear not found')
+        try:
+            self.frame_chat_persona1_bot_.destroy()
+        except:
+            print('INFO: self.frame_chat_persona1_bot_ not found')
+        self.frame_para_ti2 = ttk.LabelFrame(self.posts_frame)
+        self.frame_para_ti2.grid(row=1, column=0, padx=0 , pady=0, sticky='ns')
+        
+
+        
+
+        frame_escribir_post = ttk.LabelFrame(self.frame_para_ti2)
+        frame_escribir_post.grid(row=0, column=0, pady=0, padx=0, sticky='ew')
+
+        frame_post_santaclaus_company = ttk.LabelFrame(self.frame_para_ti2)
+        frame_post_santaclaus_company.grid(row=1, column=0, pady=0, padx=0, sticky='ew')
+
+        frame_post1 = ttk.LabelFrame(self.frame_para_ti2)
+        frame_post1.grid(row=2, column=0, pady=0, padx=0, sticky='ew')
+
+        
+
+
+        
+        
+        pad_invisible2 = ttk.Label(self.frame_para_ti2)
+        pad_invisible2.grid(padx=710, pady=700)
+        pad_invisible2.configure(state='disabled')
+        #publicar post
+        foto_escribir_post = ttk.Label(frame_escribir_post, image=self.profile2_img)
+        foto_escribir_post.grid(row=0, column=0, padx=10, pady=0)
+        self.entry_escribir_post = ttk.Entry(frame_escribir_post)
+        self.entry_escribir_post.grid(row=0, column=1, padx=0, pady=20, sticky='ew')
+        pad_escribir_post_invisible = tk.Label(self.entry_escribir_post)
+        pad_escribir_post_invisible.grid(padx=680, pady=0)
+        pad_escribir_post_invisible.configure(state='disabled')
+        self.boton_publicar_post = ttk.Button(frame_escribir_post, image=self.flechita_img, style='Custom.TButton', command=self.publicar_post)
+        self.boton_publicar_post.grid(row=0, column=2, padx=0, pady=0)
+
+        #santaclaus_company
+        post_foto_santaclaus_company = ttk.Label(frame_post_santaclaus_company)
+        post_foto_santaclaus_company.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        post_nombre_santaclaus_company = ttk.Label(frame_post_santaclaus_company, text='santaclaus_company', style='Nombree.TLabel')
+        post_nombre_santaclaus_company.grid(row=0, column=1, padx=0, pady=0)
+        post_nombre2_santaclaus_company = ttk.Label(frame_post_santaclaus_company, text='@santaclaus_company_oficial', style='Usuario.TLabel')
+        post_nombre2_santaclaus_company.grid(row=0, column=2, padx=0, pady=0)
+        post_santaclaus_company = ttk.Label(frame_post_santaclaus_company, text='----') 
+        post_santaclaus_company.grid(row=1, column=1)
+        post_santaclaus_company2 = ttk.Label(frame_post_santaclaus_company, text='¡Prueba nuestro nuevo software para dar regalos desde nuestros increibles trineos!\n Tan solo pulsa el botón para abrirlo y dale regalos a quien quieras (solo para personas autorizadas).')
+        post_santaclaus_company2.grid(row=1, column=3)
+        post_santaclaus_company3 = ttk.Label(frame_post_santaclaus_company, text='----------->')
+        post_santaclaus_company3.grid(row=1, column=2)
+        christmas_pressent_delivery_button = ttk.Button(frame_post_santaclaus_company, text='santaclaus_company christmas present delivery software', command=santaclaus_company_balistik)
+        christmas_pressent_delivery_button.grid(row=1, column=4, padx=30)
+
+        post1_foto = ttk.Label(frame_post1, image=self.post1_img)
+        post1_foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        post1_nombre = ttk.Label(frame_post1, text='Usuario', style='Nombree.TLabel')
+        post1_nombre.grid(row=0, column=1, padx=0, pady=0)
+        post1_usuario = ttk.Label(frame_post1, text='@usuario', style='Usuario.TLabel')
+        post1_usuario.grid(row=0, column=2, padx=0, pady=0)
+        post1 = ttk.Label(frame_post1, text='-------')
+        post1.grid(row=1, column=1)
+        post1_2 = ttk.Label(frame_post1, text='------->')
+        post1_2.grid(row=1, column=2)
+        post1_real = ttk.Label(frame_post1, text='Esto es un post')
+        post1_real.grid(row=1, column=3)
+
+         
+    def publicar_post(self,): 
+           # Crear un nuevo frame para el post
+        try: #try to insert the post in the frame_para_ti
+            new_post_frame = ttk.Frame(self.frame_para_ti)
+            new_post_frame.grid(row=self.next_row_of_post, column=1, pady=0, sticky='ew')
+            print('INFO: post will spawn in the frame_para_ti')
+        except: #if the code above fails, insert the post in the frame_para_ti2
+            new_post_frame = ttk.Frame(self.frame_para_ti2)
+            new_post_frame.grid(row=self.next_row_of_post, column=1, pady=0, sticky='ew')
+            print('INFO: post will spawn in the frame_para_ti2')
+
+        self.new_post_img = ttk.Label(new_post_frame, image=self.post1_img)
+        self.new_post_img.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        self.new_post_name = ttk.Label(new_post_frame, text=self.nombre_usuario_publico, style='Nombree.TLabel')
+        self.new_post_name.grid(row=0, column=1, padx=0, pady=0)
+        self.new_post_user = ttk.Label(new_post_frame, text=self.nombre_usuario_publico +'@', style='Usuario.TLabel')
+        self.new_post_user.grid(row=0, column=2, padx=0, pady=0)
+        self.new_post_tecnical_uses_text = ttk.Label(new_post_frame, text='-------')
+        self.new_post_tecnical_uses_text.grid(row=1, column=1)
+        self.new_post_tecnical_uses_text2 = ttk.Label(new_post_frame, text='------->')
+        self.new_post_tecnical_uses_text2.grid(row=1, column=2)
+        try:
+            text_of_the_post = self.entry_escribir_post.get()
+        except:
+            pass
+        self.new_post = ttk.Label(new_post_frame, text=text_of_the_post) 
+        self.new_post.grid(row=1, column=3)
+        
+        # Incrementar el contador de posts publicados
+        self.next_row_of_post += 1
+        print('next post will spawn in row: ',self.next_row_of_post)
+         
+
+        
+    #MARK: HOME Y DERIBADOS
+    def home_boton(self):
+        self.estilo_siguiendo241234 = Font(family='Berlin Sans FB', size=14)
+        self.estilo_para_ti24523454 = Font(family='Berlin Sans FB', size=14, weight='bold')
+        self.try_to_destroy_standar() #acordarse de la existencia de esto
+
+        if True == False:
+            pass
+        else:
+            self.frame_para_ti_o_siguiendo = ttk.LabelFrame(self.posts_frame, text='INICIO')
+            self.frame_para_ti_o_siguiendo.grid(row=0, column=0,sticky='ew')
+
+            self.estilo_para_ti1 = Font(family='Berlin Sans FB', size=14)
+            self.estilo_siguiendo1 = Font(family='Berlin Sans FB', size=14)
+            self.para_ti_button = tk.Button(self.frame_para_ti_o_siguiendo, text='Para ti', command=self.para_ti, font=self.estilo_para_ti1)
+            self.para_ti_button.grid(row=0, column=0, padx=315, sticky='ew')
+            self.siguiendo_button = tk.Button(self.frame_para_ti_o_siguiendo, text='Siguiendo', command=self.siguiendo, font=self.estilo_siguiendo1)
+            self.siguiendo_button.grid(row=0, column=1, padx=315, sticky='ew')
+            
+
+        
+        self.aviso_home = ttk.Label(self.posts_frame, text='selecciona una categoria para verla')
+        self.aviso_home.grid(row=1, column=0, pady=200, padx=625, sticky='ew')
+        
+    def ventana_emergente_prueba(self):
+        self.try_to_destroy_ventanas()
+        self.ventana_emergente = tk.Toplevel(window)
+        funcion_en_desarrollo = ttk.Label(self.ventana_emergente, text='funcion en desarrollo.')
+        funcion_en_desarrollo.pack()
+
+    def pulsar_boton_seguir_persona1_bot_(self):
+        self.siguiendo_persona1_bot_ = True
+
+        self.persona1_bot__follow.destroy()
+        self.persona1_bot__actually_following = tk.Button(self.frame_persona1_bot_, text='siguiendo', compound='right',command=self.pulsar_boton_siguiendo_persona1_bot_)
+        self.persona1_bot__actually_following.grid(row=1, column=5, padx=40, sticky='ew')
+    def pulsar_boton_siguiendo_persona1_bot_(self):
+        self.siguiendo_persona1_bot_ = False
+
+        self.persona1_bot__actually_following.destroy()
+        self.persona1_bot__follow = tk.Button(self.frame_persona1_bot_, text='Seguir', compound='right', command=self.pulsar_boton_seguir_persona1_bot_)
+        self.persona1_bot__follow.grid(row=1, column=5, padx=40, sticky='ew')
+
+    
+
+
+
+
+
+
+
+
+        
+
+
+
+
+    def pulsar_boton_seguir_generic_doll(self):
+        self.siguiendo_generic_doll = True
+
+        self.generic_doll_follow.destroy()
+        self.generic_doll_actually_following = tk.Button(self.frame_generic_doll, text='siguiendo', compound='right',command=self.pulsar_boton_siguiendo_generic_doll)
+        self.generic_doll_actually_following.grid(row=1, column=5, padx=40, sticky='ew')
+    def pulsar_boton_siguiendo_generic_doll(self):
+        self.siguiendo_generic_doll = False
+        
+        self.generic_doll_actually_following.destroy()
+        self.generic_doll_follow = tk.Button(self.frame_generic_doll, text='Seguir', compound='right', command=self.pulsar_boton_seguir_generic_doll)
+        self.generic_doll_follow.grid(row=1, column=5, padx=40, sticky='ew')
+        
+    def pulsar_boton_seguir_browser(self):
+        self.siguiendo_browser = True
+
+        self.browser_follow.destroy()
+        self.browser_actually_following = tk.Button(self.frame_browser, text='siguiendo', compound='right',command=self.pulsar_boton_siguiendo_browser)
+        self.browser_actually_following.grid(row=1, column=5, padx=40, sticky='ew')
+    def pulsar_boton_siguiendo_browser(self):
+        
+        self.siguiendo_browser = False
+        
+        self.browser_actually_following.destroy()
+        self.browser_follow = tk.Button(self.frame_browser, text='Seguir', compound='right', command=self.pulsar_boton_seguir_browser)
+        self.browser_follow.grid(row=1, column=5, padx=40, sticky='ew')
+        
+    #MARK: SIGUIENDO Y DERIVADOS
+    def siguiendo(self):
+        self.estilo_siguiendo24123 = Font(family='Berlin Sans FB', size=14, weight='bold')
+        self.estilo_para_ti2452345 = Font(family='Berlin Sans FB', size=14)
+        try:
+            self.siguiendo_button.config(font=self.estilo_siguiendo24123)
+            self.para_ti_button.config(font=self.estilo_para_ti2452345)
+        except:
+            print(' ')
+            print('rayos i centellas!')
+        
+        try:
+
+            self.frame_para_ti.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_para_ti')
+        try:
+            self.frame_para_ti2.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_para_ti2')
+        try:
+            print(' ')
+            self.frame_siguiendo2.destroy()
+        except:
+            print('INFO: no se ha encontrado self.frame_siguiendo2')
+        
+        try:
+            self.aviso_home.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.aviso_home')
+
+            
+        
+        self.frame_siguiendo2 = ttk.LabelFrame(self.posts_frame,)
+        self.frame_siguiendo2.grid(row=1, column=0, padx=0 , pady=0, sticky='ns')
+
+        self.espaciado_invisible_siguiendo2 = ttk.Label(self.frame_siguiendo2)
+        self.espaciado_invisible_siguiendo2.grid(row=29, column=0, sticky='ew', padx=705, pady=0)
+        self.espaciado_invisible_siguiendo2.config(state='disabled')
+        
+        
+        try:
+            if self.siguiendo_persona1_bot_ == True:
+                self.frame_post_persona1_bot_ = ttk.LabelFrame(self.frame_siguiendo2)
+                self.frame_post_persona1_bot_.grid(row=0, column=0, padx=0, pady=0, sticky='ew')
+
+                post_persona1_bot__foto = ttk.Label(self.frame_post_persona1_bot_)
+                post_persona1_bot__foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+                post_persona1_bot__nombre = ttk.Label(self.frame_post_persona1_bot_, text='persona1_bot_', style='Nombree.TLabel')
+                post_persona1_bot__nombre.grid(row=0, column=1, padx=0, pady=0)
+                post_persona1_bot__usuario = ttk.Label(self.frame_post_persona1_bot_, text='usuario1_bot_', style='Usuario.TLabel')
+                post_persona1_bot__usuario.grid(row=0, column=2, padx=0, pady=0)
+                post_persona1_bot_ = ttk.Label(self.frame_post_persona1_bot_, text='-------')
+                post_persona1_bot_.grid(row=1, column=1)
+                post_persona1_bot__2 = ttk.Label(self.frame_post_persona1_bot_, text='------->')
+                post_persona1_bot__2.grid(row=1, column=2)
+                post_persona1_bot__real = ttk.Label(self.frame_post_persona1_bot_, text='placeholder')
+                post_persona1_bot__real.grid(row=1, column=3)
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.siguiendo_persona1_bot_')
+       
+            print(' ')
+
+        try:
+            if self.siguiendo_generic_doll == True:
+                self.frame_post_generic_doll = ttk.LabelFrame(self.frame_siguiendo2)
+                self.frame_post_generic_doll.grid(row=2, column=0, padx=0, pady=0, sticky='ew')
+
+                post_generic_doll_foto = ttk.Label(self.frame_post_generic_doll,)
+                post_generic_doll_foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+                post_generic_doll_nombre = ttk.Label(self.frame_post_generic_doll, text='generic_doll', style='Nombree.TLabel')
+                post_generic_doll_nombre.grid(row=0, column=1, padx=0, pady=0)
+                post_generic_doll_usuario = ttk.Label(self.frame_post_generic_doll, text='@generic_doll_official', style='Usuario.TLabel')
+                post_generic_doll_usuario.grid(row=0, column=2, padx=0, pady=0)
+                post_generic_doll = ttk.Label(self.frame_post_generic_doll, text='-------')
+                post_generic_doll.grid(row=1, column=1)
+                post_generic_doll_2 = ttk.Label(self.frame_post_generic_doll, text='------->')
+                post_generic_doll_2.grid(row=1, column=2)
+                post_generic_doll_real = ttk.Label(self.frame_post_generic_doll, text='hey chicas nos vamos de viaje a polonia! compra ya la nueva vestimenta de turismo por europa.')
+                post_generic_doll_real.grid(row=1, column=3)
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.siguiendo_generic_doll')
+        try:
+            if self.siguiendo_browser == True:
+                self.frame_post_generic_doll = ttk.LabelFrame(self.frame_siguiendo2)
+                self.frame_post_generic_doll.grid(row=3, column=0, padx=0, pady=0, sticky='ew')
+
+                post_generic_doll_foto = ttk.Label(self.frame_post_generic_doll)
+                post_generic_doll_foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+                post_generic_doll_nombre = ttk.Label(self.frame_post_generic_doll, text='browser', style='Nombree.TLabel')
+                post_generic_doll_nombre.grid(row=0, column=1, padx=0, pady=0)
+                post_generic_doll_usuario = ttk.Label(self.frame_post_generic_doll, text='@browser', style='Usuario.TLabel')
+                post_generic_doll_usuario.grid(row=0, column=2, padx=0, pady=0)
+                post_generic_doll = ttk.Label(self.frame_post_generic_doll, text='-------')
+                post_generic_doll.grid(row=1, column=1)
+                post_generic_doll_2 = ttk.Label(self.frame_post_generic_doll, text='------->')
+                post_generic_doll_2.grid(row=1, column=2)
+                post_generic_doll_real = ttk.Label(self.frame_post_generic_doll, text='Nueva actualización de generic browser. Se ha añadido browser AI, un mod para deprabados sexuales que gira entorno a la mascota anime de nuestra marca (tambien con variantes hentai)')
+                post_generic_doll_real.grid(row=1, column=3)
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.siguiendo_browser')
+        # try:
+
+        #         self.no_sigues_a_nadie = ttk.Label(self.frame_siguiendo2, text='No estas siguiendo a nadie')
+        #         self.no_sigues_a_nadie.grid(row=4, column=0, padx=0, pady=0, sticky='ew')
+        # except:
+        #     print(' ')
+
+    
+
+
+    #MARK:EXPLORAR Y DERIBADOS
+    def explorar(self): #PONER CATEGORIAS ARRIBA (postS FRAME)
+        self.try_to_destroy_standar()
+            
+        self.frame_explorar = ttk.LabelFrame(self.posts_frame, text='EXPLORAR')
+        self.frame_explorar.grid(row=0, column=0, sticky='ns', padx= 0, pady=0)
+
+        
+
+        self.boton_config_explorar = ttk.Button(self.frame_explorar, image=self.config_busqueda_explorar_img, command=self.subventana) 
+        self.boton_config_explorar.grid(row=0, column=0, sticky='nsew',padx=0, pady=0)
+        
+
+        self.foto_escribir_buscar_explorar = ttk.Label(self.frame_explorar, image=self.profile2_img)
+        self.foto_escribir_buscar_explorar.grid(row=0, column=1, padx=10, pady=0)
+        self.escribir_buscar_explorar = ttk.Entry(self.frame_explorar)
+        self.escribir_buscar_explorar.grid(row=0, column=2, padx=0, pady=20, sticky='ew')
+        self.pad_escribir_buscar_invisible_explorar = ttk.Label(self.escribir_buscar_explorar)
+        self.pad_escribir_buscar_invisible_explorar.grid(padx=605, pady=0, row=0, column=0)
+        self.pad_escribir_buscar_invisible_explorar.config(state='disabled')
+        self.boton_enter_explorar = ttk.Button(self.frame_explorar, image=self.flechita_img, command=self.pulsar_boton_buscar_frame_r)
+        self.boton_enter_explorar.grid(row=0, column=3, sticky='ew')
+
+
+        but_w_happening = ttk.Button(self.frame_explorar, style='Padding.TButton')
+        but_w_happening.grid(row=1, column=0, padx=0, pady=0, sticky='ew')
+
+        label_categoria1 = ttk.Label(but_w_happening, text='Informática', style="Categoria.TLabel")
+        label_categoria1.grid(row=0, sticky='ew', pady=0)
+        label_nombre1=ttk.Label(but_w_happening, text='como programar en python', style='Nombre.TLabel')
+        label_nombre1.grid(row=1, sticky='ew', pady=0)
+        label_cantidad1 = ttk.Label(but_w_happening, text='344 mil posts', style="Cantidad.TLabel")
+        label_cantidad1.grid(row=2, sticky='ew', pady=0)
+
+        label_categoria2 = ttk.Label(but_w_happening, text='Informática', style="Categoria.TLabel")
+        label_categoria2.grid(row=3, sticky='ew', pady=0)
+        label_nombre2=ttk.Label(but_w_happening, text='como programar en python', style='Nombre.TLabel')
+        label_nombre2.grid(row=4, sticky='ew', pady=0)
+        label_cantidad2 = ttk.Label(but_w_happening, text='344 mil posts', style="Cantidad.TLabel")
+        label_cantidad2.grid(row=5, sticky='ew', pady=0)
+
+        label_categoria3 = ttk.Label(but_w_happening, text='Informática', style="Categoria.TLabel")
+        label_categoria3.grid(row=6, sticky='ew', pady=0)
+        label_nombre3=ttk.Label(but_w_happening, text='como programar en python', style='Nombre.TLabel')
+        label_nombre3.grid(row=7, sticky='ew', pady=0)
+        label_cantidad3 = ttk.Label(but_w_happening, text='344 mil posts', style="Cantidad.TLabel")
+        label_cantidad3.grid(row=8, sticky='ew', pady=0)
+
+        label_categoria4 = ttk.Label(but_w_happening, text='Informática', style="Categoria.TLabel")
+        label_categoria4.grid(row=9, sticky='ew', pady=0)
+        label_nombre4=ttk.Label(but_w_happening, text='como programar en python', style='Nombre.TLabel')
+        label_nombre4.grid(row=10, sticky='ew', pady=0)
+        label_cantidad4 = ttk.Label(but_w_happening, text='344 mil posts', style="Cantidad.TLabel")
+        label_cantidad4.grid(row=11, sticky='ew', pady=0)
+
+        label_categoria13 = ttk.Label(but_w_happening, text='Informática', style="Categoria.TLabel")
+        label_categoria13.grid(row=12, sticky='ew', pady=0)
+        label_nombre13 = ttk.Label(but_w_happening, text='como programar en python', style='Nombre.TLabel')
+        label_nombre13.grid(row=13, sticky='ew', pady=0)
+        label_cantidad13 = ttk.Label(but_w_happening, text='344 mil posts', style="Cantidad.TLabel")
+        label_cantidad13.grid(row=14, sticky='ew', pady=0)
+
+        label_categoria16 = ttk.Label(but_w_happening, text='Informática', style="Categoria.TLabel")
+        label_categoria16.grid(row=15, sticky='ew', pady=0)
+        label_nombre16 = ttk.Label(but_w_happening, text='como programar en python', style='Nombre.TLabel')
+        label_nombre16.grid(row=16, sticky='ew', pady=0)
+        label_cantidad16 = ttk.Label(but_w_happening, text='344 mil posts', style="Cantidad.TLabel")
+        label_cantidad16.grid(row=17, sticky='ew', pady=0)
+        self.boton_activado = False
+    def subventana(self):
+        self.config_busqueda_explorar_ventana = tk.Toplevel(self.wind)
+        self.config_busqueda_explorar_ventana.title = ('Configuración de busqueda')
+        self.label_ajuste = ttk.Label(self.config_busqueda_explorar_ventana, text='Buscar en base a tu ubicación')
+        self.label_ajuste.grid(row=0, sticky='ew', pady=0, padx=0, column=0)
+        if self.boton_activado == False:
+            self.boton_ajuste = tk.Button(self.config_busqueda_explorar_ventana, text='desactivado', command=self.pulsar_boton_ajuste_busqueda_explorar_ventana)
+            self.boton_ajuste.grid(row=0, sticky='ew', column=1, pady=0, padx=0)
+        else:
+            self.boton_ajuste_activado = tk.Button(self.config_busqueda_explorar_ventana, text='activado', command=self.pulsar_boton_ajuste_busqueda_explorar_ventana_pero_esto_desactiva)
+            self.boton_ajuste_activado.grid(row=0, sticky='ew', column=1, pady=0, padx=0)
+            self.boton_activado= True
+    def pulsar_boton_ajuste_busqueda_explorar_ventana(self):
+        
+        self.boton_ajuste.destroy()
+        self.boton_ajuste_activado = tk.Button(self.config_busqueda_explorar_ventana, text='activado', command=self.pulsar_boton_ajuste_busqueda_explorar_ventana_pero_esto_desactiva)
+        self.boton_ajuste_activado.grid(row=0, sticky='ew', column=1, pady=0, padx=0)
+
+        self.boton_activado= True
+    
+    def pulsar_boton_ajuste_busqueda_explorar_ventana_pero_esto_desactiva(self):
+        self.boton_ajuste = tk.Button(self.config_busqueda_explorar_ventana, text='desactivado', command=self.pulsar_boton_ajuste_busqueda_explorar_ventana)
+        self.boton_ajuste.grid(row=0, sticky='ew', column=1, pady=0, padx=0)
+
+        self.boton_activado = False
+
+    #MARK: NOTIFICACIONES Y DERIVADOS
+    def notificaciones(self):
+        self.try_to_destroy_standar()
+
+        
+        self.frame_categorias_titulo_config_notificaciones = ttk.LabelFrame(self.posts_frame)
+        self.frame_categorias_titulo_config_notificaciones.grid(row= 0, padx=0, sticky='ew', column=0, pady=0)
+        self.espaciado_interno_notificaciones = ttk.Label(self.frame_categorias_titulo_config_notificaciones)
+        self.espaciado_interno_notificaciones.grid(padx=700, row=1)
+        self.espaciado_interno_notificaciones.config(state='disabled')
+        
+
+
+        #ESTILOS
+        self.estilo_notis_sin_negrita = Font(family='Berlin Sans FB', size=13)
+        self.estilo_notis_negrita = Font(family='Berlin Sans FB', size=13, weight='bold')
+        
+        #--------------------------
+        self.titulo_label_notificaciones = ttk.Label(self.frame_categorias_titulo_config_notificaciones, text='Notificaciones', style="Custom.TLabel")
+        self.titulo_label_notificaciones.grid(row= 0, padx=0, sticky='ew', column=0, pady=0)
+        self.config_notificaciones = ttk.Button(self.frame_categorias_titulo_config_notificaciones, image=self.config_busqueda_explorar_img, command=self.pulsar_boton_ajuste_notis)
+        self.frame_todas_notis_verificado_o_menciones = ttk.LabelFrame(self.frame_categorias_titulo_config_notificaciones)
+        self.frame_todas_notis_verificado_o_menciones.grid(row= 3, column=0, padx=0, pady=0, sticky='ew', columnspan=3)
+        self.config_notificaciones.grid(row= 0, column=2, padx=0, pady=0, sticky='ew')
+
+        self.todas_notificaciones = tk.Button(self.frame_todas_notis_verificado_o_menciones, text='Todas', font=self.estilo_notis_sin_negrita, command=self.pulsar_boton_todas_notificaciones, padx=200)
+        self.todas_notificaciones.config()
+        self.todas_notificaciones.grid(row=0, column=0, padx=0, sticky='ew', pady=0, )
+        self.verificado_notificaciones = tk.Button(self.frame_todas_notis_verificado_o_menciones, text='Verificado', font=self.estilo_notis_sin_negrita, command=self.pulsar_boton_verificado_notificaciones, padx=200)
+        self.verificado_notificaciones.config()
+        self.verificado_notificaciones.grid(row=0, column=1, padx=0, sticky='ew', pady=0,)
+        self.menciones_notificaciones = tk.Button(self.frame_todas_notis_verificado_o_menciones, text='Menciones', font=self.estilo_notis_sin_negrita, command=self.pulsar_boton_menciones_notificaciones, padx=200)
+        self.menciones_notificaciones.config()
+        self.menciones_notificaciones.grid(row=0, column=2, padx=0, sticky='ew', pady=0)
+
+        
+        self.aviso_home = ttk.Label(self.posts_frame, text='selecciona una categoria para verla')
+        self.aviso_home.grid(row=1, column=0, pady=200, padx=625, sticky='ew')
+        
+    def pulsar_boton_todas_notificaciones(self):
+        self.todas_notificaciones.config(font=self.estilo_notis_negrita)
+        self.verificado_notificaciones.config(font=self.estilo_notis_sin_negrita)
+        self.menciones_notificaciones.config(font=self.estilo_notis_sin_negrita)
+
+        try:
+            self.frame_noti_persona1_bot_.destroy()
+        except:
+            print('INFO: self.frame_noti_persona1_bot_ not found')
+        try:
+            self.frame_noti_hacienda.destroy()
+        except:
+            print('INFO: self.frame_noti_hacienda not found')
+        try:
+            self.frame_noti_social_media_app_simulator.destroy()
+        except:
+            print('INFO: self.frame_noti_social_media_app_simulator not found')
+        
+        self.frame_noti_persona1_bot_ = ttk.LabelFrame(self.frame_categorias_titulo_config_notificaciones)
+        self.frame_noti_persona1_bot_.grid(row=4, column=0, sticky='ew', padx=0, pady=0)
+
+        post_persona1_bot__foto = ttk.Label(self.frame_noti_persona1_bot_)
+        post_persona1_bot__foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        post_persona1_bot__nombre = ttk.Label(self.frame_noti_persona1_bot_, text='persona1_bot_✅', style='Nombree.TLabel')
+        post_persona1_bot__nombre.grid(row=0, column=1, padx=0, pady=0)
+        post_persona1_bot__usuario = ttk.Label(self.frame_noti_persona1_bot_, text='usuario1_bot_', style='Usuario.TLabel')
+        post_persona1_bot__usuario.grid(row=0, column=2, padx=0, pady=0)
+        post_persona1_bot_ = ttk.Label(self.frame_noti_persona1_bot_, text='-------')
+        post_persona1_bot_.grid(row=1, column=1)
+        post_persona1_bot__2 = ttk.Label(self.frame_noti_persona1_bot_, text='------->')
+        post_persona1_bot__2.grid(row=1, column=2)
+
+        self.frame_noti_hacienda = ttk.LabelFrame(self.frame_categorias_titulo_config_notificaciones)
+        self.frame_noti_hacienda.grid(row=6, column=0, sticky='ew', padx=0, pady=0)
+
+        post_hacienda_foto = ttk.Label(self.frame_noti_hacienda)
+        post_hacienda_foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        post_hacienda_nombre = ttk.Label(self.frame_noti_hacienda, text='Hacienda', style='Nombree.TLabel')
+        post_hacienda_nombre.grid(row=0, column=1, padx=0, pady=0)
+        post_hacienda_usuario = ttk.Label(self.frame_noti_hacienda, text='@los_ladrones', style='Usuario.TLabel')
+        post_hacienda_usuario.grid(row=0, column=2, padx=0, pady=0)
+        post_hacienda = ttk.Label(self.frame_noti_hacienda, text='-------')
+        post_hacienda.grid(row=1, column=1)
+        post_hacienda_2 = ttk.Label(self.frame_noti_hacienda, text='------->')
+        post_hacienda_2.grid(row=1, column=2)
+        self.post_hacienda_real_menciones = ttk.Label(self.frame_noti_hacienda, text=(self.nombre_usuario_publico, 'hello world'))
+        self.post_hacienda_real_menciones.grid(row=1, column=3)
+        if self.boton_pulsado_menciones == False:
+            self.post_hacienda_silenciar_menciones = ttk.Button(self.post_hacienda_real_menciones, text='silenciar', command=self.pulsar_boton_silenciar_notis_menciones)
+            self.post_hacienda_silenciar_menciones.grid(row=0, column=1, padx=280, pady=0, sticky='ew')
+        elif self.boton_pulsado_menciones == True:
+            self.post_hacienda_silenciar_menciones_activado = ttk.Button(self.post_hacienda_real_menciones, text='silenciado', command=self.pulsar_boton_silenciar_notis_menciones_activ)
+            self.post_hacienda_silenciar_menciones_activado.grid(row=0, column=1, padx=280, pady=0, sticky='ew')
+        
+        self.post_persona1_bot__real_verificado = ttk.Label(self.frame_noti_persona1_bot_, text='place holder')
+        self.post_persona1_bot__real_verificado.grid(row=1, column=3)
+        if self.boton_pulsado_verificado == False:
+            
+            self.post_persona1_bot__silenciar_verificado = ttk.Button(self.post_persona1_bot__real_verificado, text='silenciar', command=self.pulsar_boton_silenciar_notis_verificado)
+            self.post_persona1_bot__silenciar_verificado.grid(row=0, column=1, padx=400, pady=0, sticky='ew')
+        elif self.boton_pulsado_verificado == True:
+            
+            self.post_persona1_bot__silenciar_verificado_activado = ttk.Button(self.post_persona1_bot__real_verificado, text='silenciado', command=self.pulsar_boton_silenciar_notis_verificado_activ)
+            self.post_persona1_bot__silenciar_verificado_activado.grid(row=0, column=1, padx=400, pady=0, sticky='ew')
+
+        self.frame_noti_social_media_app_simulator = ttk.LabelFrame(self.frame_categorias_titulo_config_notificaciones)
+        self.frame_noti_social_media_app_simulator.grid(row=5, column=0, sticky='ew', padx=0, pady=0)
+
+        post_social_media_app_simulator_foto = ttk.Label(self.frame_noti_social_media_app_simulator)
+        post_social_media_app_simulator_foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        post_social_media_app_simulator_nombre = ttk.Label(self.frame_noti_social_media_app_simulator, text='social_media_app_simulator', style='Nombree.TLabel')
+        post_social_media_app_simulator_nombre.grid(row=0, column=1, padx=0, pady=0)
+        post_social_media_app_simulator_usuario = ttk.Label(self.frame_noti_social_media_app_simulator, text='@social_media_app_simulator', style='Usuario.TLabel')
+        post_social_media_app_simulator_usuario.grid(row=0, column=2, padx=0, pady=0)
+        post_social_media_app_simulator = ttk.Label(self.frame_noti_social_media_app_simulator, text='-------')
+        post_social_media_app_simulator.grid(row=1, column=1)
+        post_social_media_app_simulator_2 = ttk.Label(self.frame_noti_social_media_app_simulator, text='------->')
+        post_social_media_app_simulator_2.grid(row=1, column=2)
+        self.post_social_media_app_simulator_real = ttk.Label(self.frame_noti_social_media_app_simulator, text='Se ha iniciado sesión en tu cuenta Usuario desde un dispositivo nuevo el 28 ago. 2023. Compruébalo ahora.')
+        self.post_social_media_app_simulator_real.grid(row=1, column=3)
+        
+
+        if self.boton_pulsado_social_media_app_simulator == False:
+            self.post_social_media_app_simulator_silenciar_social_media_app_simulator = ttk.Button(self.post_social_media_app_simulator_real, text='silenciar', command=self.pulsar_boton_silenciar_notis_social_media_app_simulator)
+            self.post_social_media_app_simulator_silenciar_social_media_app_simulator.grid(row=0, column=1, padx=580, pady=0, sticky='ew')
+        elif self.boton_pulsado_social_media_app_simulator == True:
+            self.post_social_media_app_simulator_silenciar_social_media_app_simulator_activado = ttk.Button(self.post_social_media_app_simulator_real, text='silenciado', command=self.pulsar_boton_silenciar_notis_social_media_app_simulator_activ)
+            self.post_social_media_app_simulator_silenciar_social_media_app_simulator_activado.grid(row=0, column=1, padx=580, pady=0, sticky='ew')
+        
+    
+
+    def pulsar_boton_silenciar_notis_social_media_app_simulator(self):
+        try:
+            self.post_social_media_app_simulator_silenciar_social_media_app_simulator.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.post_social_media_app_simulator_silenciar_social_media_app_simulator')
+        try:
+            self.post_social_media_app_simulator_silenciar_social_media_app_simulator_activado.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.post_social_media_app_simulator_silenciar_social_media_app_simulator_activado')
+        self.boton_pulsado_social_media_app_simulator = True
+        if self.boton_pulsado_social_media_app_simulator == True:
+            try:
+                self.postsocial_media_app_simulator_silenciar_social_media_app_simulator_activado = ttk.Button(self.post_social_media_app_simulator_real, text='silenciado', command=self.pulsar_boton_silenciar_notis_social_media_app_simulator_activ)
+                self.postsocial_media_app_simulator_silenciar_social_media_app_simulator_activado.grid(row=0, column=1, padx=580, pady=0, sticky='ew')
+            except:
+                print(' ')
+                print('INFO: no such self.post_social_media_app_simulator_real or ventana')
+            try:
+                self.config_social_media_app_simulator_button = tk.Button(self.frame_notis_config_social_media_app_simulator, command=self.pulsar_boton_silenciar_notis_social_media_app_simulator_activ, text='silenciado')
+                self.config_social_media_app_simulator_button.grid(row=0, column=3, padx=10, pady=0, sticky='ew')
+            except:
+                print(' ')
+                print('INFO: no such self.frame_notis_config_social_media_app_simulator or ventana')
+
+    def pulsar_boton_silenciar_notis_social_media_app_simulator_activ(self):
+        try:
+            self.post_social_media_app_simulator_silenciar_social_media_app_simulator_activado.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.postsocial_media_app_simulator_silenciar_social_media_app_simulator_activado')
+        try:
+            self.post_social_media_app_simulator_silenciar_social_media_app_simulator.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.post_social_media_app_simulator_silenciar_social_media_app_simulator')
+        self.boton_pulsado_social_media_app_simulator = False
+        if self.boton_pulsado_social_media_app_simulator == False:
+            try:
+                self.post_social_media_app_simulator_silenciar_social_media_app_simulator = ttk.Button(self.post_social_media_app_simulator_real, text='silenciar', command=self.pulsar_boton_silenciar_notis_social_media_app_simulator)
+                self.post_social_media_app_simulator_silenciar_social_media_app_simulator.grid(row=0, column=1, padx=580, pady=0, sticky='ew')
+            except:
+                print(' ')
+                print('INFO:o such self.post_social_media_app_simulator_real or ventana')
+        
+            try:
+                self.config_social_media_app_simulator_button = tk.Button(self.frame_notis_config_social_media_app_simulator, command=self.pulsar_boton_silenciar_notis_social_media_app_simulator, text='silenciar')
+                self.config_social_media_app_simulator_button.grid(row=0, column=3, padx=10, pady=0, sticky='ew')
+            except:
+                print(' ')
+                print('INFO: no such self.frame_notis_config_social_media_app_simulator_activado or ventana')
+
+
+                  
+
+        
+
+
+        
+
+    def pulsar_boton_verificado_notificaciones(self):
+        
+        self.todas_notificaciones.config(font=self.estilo_notis_sin_negrita)
+        self.verificado_notificaciones.config(font=self.estilo_notis_negrita)
+        self.menciones_notificaciones.config(font=self.estilo_notis_sin_negrita)
+        
+        try:
+            self.aviso_home.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.aviso_home')
+        try:
+            self.frame_noti_social_media_app_simulator.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_noti_social_media_app_simulator')
+        
+        try:
+            self.frame_noti_hacienda.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_noti_hacienda')
+        self.frame_noti_persona1_bot_ = ttk.LabelFrame(self.frame_categorias_titulo_config_notificaciones)
+        self.frame_noti_persona1_bot_.grid(row=4, column=0, sticky='ew', padx=0, pady=0)
+
+        post_persona1_bot__foto = ttk.Label(self.frame_noti_persona1_bot_)
+        post_persona1_bot__foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        post_persona1_bot__nombre = ttk.Label(self.frame_noti_persona1_bot_, text='persona1_bot_✅', style='Nombree.TLabel')
+        post_persona1_bot__nombre.grid(row=0, column=1, padx=0, pady=0)
+        post_persona1_bot__usuario = ttk.Label(self.frame_noti_persona1_bot_, text='usuario1_bot_', style='Usuario.TLabel')
+        post_persona1_bot__usuario.grid(row=0, column=2, padx=0, pady=0)
+        post_persona1_bot_ = ttk.Label(self.frame_noti_persona1_bot_, text='-------')
+        post_persona1_bot_.grid(row=1, column=1)
+        post_persona1_bot__2 = ttk.Label(self.frame_noti_persona1_bot_, text='------->')
+        post_persona1_bot__2.grid(row=1, column=2)
+        self.post_persona1_bot__real_verificado = ttk.Label(self.frame_noti_persona1_bot_, text='place holder')
+        self.post_persona1_bot__real_verificado.grid(row=1, column=3)
+        if self.boton_pulsado_verificado == False:
+            try:
+                self.post_persona1_bot__silenciar_verificado_activado.destroy()
+            except:
+                print(' ')
+                print('INFO: no se ha encontrado self.post_persona1_bot__silenciar_verificado_activado')
+            self.post_persona1_bot__silenciar_verificado = ttk.Button(self.post_persona1_bot__real_verificado, text='silenciar', command=self.pulsar_boton_silenciar_notis_verificado)
+            self.post_persona1_bot__silenciar_verificado.grid(row=0, column=1, padx=400, pady=0, sticky='ew')
+        elif self.boton_pulsado_verificado == True:
+            try:
+                self.post_persona1_bot__silenciar_verificado.destroy()
+            except:
+                print(' ')
+                print('INFO: no se ha encontrado self.post_persona1_bot__silenciar_verificado')
+            self.post_persona1_bot__silenciar_verificado_activado = ttk.Button(self.post_persona1_bot__real_verificado, text='silenciado', command=self.pulsar_boton_silenciar_notis_verificado_activ)
+            self.post_persona1_bot__silenciar_verificado_activado.grid(row=0, column=1, padx=400, pady=0, sticky='ew')
+        
+    
+    def pulsar_boton_silenciar_notis_verificado(self):
+        try:
+            self.post_persona1_bot__silenciar_verificado.destroy()
+        except:
+            print('INFO: no se ha encontrado self.post_persona1_bot__silenciar_verificado_activado')
+        try:
+            self.post_persona1_bot__silenciar_verificado_activado.destroy()
+        except:
+            print(' ')
+            print('INFO:o se ha encontrado self.post_hacienda_silenciar_menciones')
+        self.boton_pulsado_verificado = True
+        if self.boton_pulsado_verificado == True:
+            try:
+                self.post_persona1_bot__silenciar_verificado_activado = ttk.Button(self.post_persona1_bot__real_verificado, text='silenciado', command=self.pulsar_boton_silenciar_notis_verificado_activ)
+                self.post_persona1_bot__silenciar_verificado_activado.grid(row=0, column=1, padx=400, pady=0, sticky='ew')
+            except:
+                print(' ')
+                print('INFO: no such self.post_persona1_bot__real_verificado or ventana')
+            try:
+                self.notis_config_persona1_bot__button = tk.Button(self.frame_notis_config_persona1_bot_, command=self.pulsar_boton_silenciar_notis_verificado_activ, text='silenciado')
+                self.notis_config_persona1_bot__button.grid(row=0, column=3, padx=10, pady=0, sticky='ew')
+            except:
+                print(' ')
+                print('INFO: no such self.frame_notis_config_persona1_bot_ or ventana')
+
+
+    def pulsar_boton_silenciar_notis_verificado_activ(self):
+        try:
+             self.post_persona1_bot__silenciar_verificado_activado.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.post_persona1_bot__silenciar_verificado_activado')
+        try:
+            self.post_persona1_bot__silenciar_verificado.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.post_hacienda_silenciar_menciones')
+        self.boton_pulsado_verificado = False
+        if self.boton_pulsado_verificado == False:
+            try:
+                self.post_persona1_bot__silenciar_verificado = ttk.Button(self.post_persona1_bot__real_verificado, text='silenciar', command=self.pulsar_boton_silenciar_notis_verificado)
+                self.post_persona1_bot__silenciar_verificado.grid(row=0, column=1, padx=400, pady=0, sticky='ew')
+            except:
+                print(' ')
+                print('no such self.post_persona1_bot__real_verificado or ventana')
+            try:
+                self.notis_config_persona1_bot__button = tk.Button(self.frame_notis_config_persona1_bot_, command=self.pulsar_boton_silenciar_notis_verificado, text='silenciar')
+                self.notis_config_persona1_bot__button.grid(row=0, column=3, padx=10, pady=0, sticky='ew')
+            except:
+                print(' ')
+                print('INFO: no such self.frame_notis_config_persona1_bot_ or ventana')
+
+    def pulsar_boton_menciones_notificaciones(self):
+        
+        self.todas_notificaciones.config(font=self.estilo_notis_sin_negrita)
+        self.verificado_notificaciones.config(font=self.estilo_notis_sin_negrita)
+        self.menciones_notificaciones.config(font=self.estilo_notis_negrita)
+
+        
+        try:
+            self.aviso_home.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.aviso_home')
+        try:
+            self.frame_explorar.destroy()
+        except:
+            print(' ')
+            print('INFO:no se ha encontrado self.explorar')
+        
+        try:
+            self.frame_noti_social_media_app_simulator.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_noti_social_media_app_simulator')
+        try:
+            self.frame_noti_persona1_bot_.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_noti_persona1_bot_')
+        try:
+            self.frame_noti_hacienda.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_noti_hacienda')
+
+        
+        self.frame_noti_hacienda = ttk.LabelFrame(self.frame_categorias_titulo_config_notificaciones)
+        self.frame_noti_hacienda.grid(row=4, column=0, sticky='ew', padx=0, pady=0)
+
+        post_hacienda_foto = ttk.Label(self.frame_noti_hacienda)
+        post_hacienda_foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        post_hacienda_nombre = ttk.Label(self.frame_noti_hacienda, text='hacienda', style='Nombree.TLabel')
+        post_hacienda_nombre.grid(row=0, column=1, padx=0, pady=0)
+        post_hacienda_usuario = ttk.Label(self.frame_noti_hacienda, text='@los_ladrones', style='Usuario.TLabel')
+        post_hacienda_usuario.grid(row=0, column=2, padx=0, pady=0)
+        post_hacienda = ttk.Label(self.frame_noti_hacienda, text='-------')
+        post_hacienda.grid(row=1, column=1)
+        post_hacienda_2 = ttk.Label(self.frame_noti_hacienda, text='------->')
+        post_hacienda_2.grid(row=1, column=2)
+        self.post_hacienda_real_menciones = ttk.Label(self.frame_noti_hacienda, text=(self.nombre_usuario_publico, 'hello world'))
+        self.post_hacienda_real_menciones.grid(row=1, column=3)
+        if self.boton_pulsado_menciones == False:
+            self.post_hacienda_silenciar_menciones = ttk.Button(self.post_hacienda_real_menciones, text='silenciar', command=self.pulsar_boton_silenciar_notis_menciones)
+            self.post_hacienda_silenciar_menciones.grid(row=0, column=1, padx=280, pady=0, sticky='ew')
+        elif self.boton_pulsado_menciones == True:
+            self.post_hacienda_silenciar_menciones_activado = ttk.Button(self.post_hacienda_real_menciones, text='silenciado', command=self.pulsar_boton_silenciar_notis_menciones_activ)
+            self.post_hacienda_silenciar_menciones_activado.grid(row=0, column=1, padx=280, pady=0, sticky='ew')
+        
+    
+
+    def pulsar_boton_silenciar_notis_menciones(self):
+        try:
+            self.post_hacienda_silenciar_menciones.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.post_hacienda_silenciar_menciones')
+        try:
+            self.post_hacienda_silenciar_menciones_activado.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.post_hacienda_silenciar_mencionesd_activado')
+        
+        self.boton_pulsado_menciones = True
+        if self.boton_pulsado_menciones == True:
+            try:
+                self.post_hacienda_silenciar_menciones_activado = ttk.Button(self.post_hacienda_real_menciones, text='silenciado', command=self.pulsar_boton_silenciar_notis_menciones_activ)
+                self.post_hacienda_silenciar_menciones_activado.grid(row=0, column=1, padx=280, pady=0, sticky='ew')
+            except:
+                print(' ')
+                print('INFO: no such self.post_hacienda-real_menciones or ventana')
+            try:
+                config_hacienda_button = tk.Button(self.frame_notis_config_hacienda,command=self.pulsar_boton_silenciar_notis_menciones_activ, text='silenciado' )
+                config_hacienda_button.grid(row=0, column=3, padx=0, pady=0, sticky='ew')
+
+            except:
+                print(' ')
+                print('INFO: no such self.frame_notis_config_hacienda or ventana')
+            
+
+    def pulsar_boton_silenciar_notis_menciones_activ(self):
+        try:
+            self.post_hacienda_silenciar_menciones.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.post_hacienda_silenciar_menciones')
+        try:
+            self.post_hacienda_silenciar_menciones_activado.destroy()
+        except:
+            print(' ')
+            print('INFO:no se ha encontrado self.post_hacienda_silenciar_mencionesd_activado')
+        self.boton_pulsado_menciones = False
+        if self.boton_pulsado_menciones == False:
+            try:
+                self.post_hacienda_silenciar_menciones = ttk.Button(self.post_hacienda_real_menciones, text='silenciar', command=self.pulsar_boton_silenciar_notis_menciones)
+                self.post_hacienda_silenciar_menciones.grid(row=0, column=1, padx=280, pady=0, sticky='ew')
+            except:
+                print(' ')
+                print('INFO: no such self.post_hacienda_real_menciones_activado or ventana')
+            try:
+                config_hacienda_button = tk.Button(self.frame_notis_config_hacienda,command=self.pulsar_boton_silenciar_notis_menciones, text='silenciar' )
+                config_hacienda_button.grid(row=0, column=3, padx=0, pady=0, sticky='ew')
+
+    
+            except:
+                print(' ')
+                print('INFO: no such self.frame_notis_config_hacienda or ventana')
+
+    def pulsar_boton_ajuste_notis(self):
+        self.config_notis = tk.Toplevel(window)
+        self.config_notis.title('configuración de notificaciones')
+
+        try:
+            self.boton_atras.destroy()
+        except:
+            print(' ')
+            print('INFO: self.boton_atras no ha sido encontrado')
+        try:
+            self.frame_notis_config_persona1_bot_.destroy()
+        except:
+            print(' ')
+            print('INFO: self.frame_notis_config_persona1_bot_ no ha sido encontrado')
+        
+        self.titulo_boton_ajuste_notis = ttk.Label(self.config_notis, text='filtro de calidad', style='Verification2.TLabel')
+        self.titulo_boton_ajuste_notis.grid(row=0, column=0, padx=0, pady=0,sticky='ew')
+        self.cuerpo_boton_ajuste_notis = ttk.Label(self.config_notis, text='Elige excluir contenidos como posts duplicados o automatizados. Esto no se aplica a las notificaciones de las cuentas que sigues o con las que hayas interactuado recientemente.')
+        self.cuerpo_boton_ajuste_notis.grid(row=1, column=0, padx=0, pady=0, sticky='ew')
+        if self.boton_ajuste_notis_toplevel == True:
+            self.boton = tk.Button(self.config_notis, text='activado', command=self.pulsar_boton_ajuste_notis_toplevel_pero_desactiva)
+            self.boton.grid(row=1, column=1, padx=0, pady=0, sticky='ew')
+        elif self.boton_ajuste_notis_toplevel == False:
+            self.boton = tk.Button(self.config_notis, text='desactivado', command=self.pulsar_boton_ajuste_notis_toplevel)
+            self.boton.grid(row=1, column=1, padx=0, pady=0, sticky='ew')
+        self.titulo2_boton_ajuste_notis = ttk.Label(self.config_notis, text='Notificaciones silenciadas', style='Verification2.TLabel')
+        self.titulo2_boton_ajuste_notis.grid(row=2, column=0, padx=0, pady=0, sticky='ew')
+        self.boton_titulo2_boton_ajuste_notis = ttk.Button(self.titulo2_boton_ajuste_notis, image=self.flechita_img, command=self.tocar_boton_notificaciones_silenciadas_toplvl)
+        self.boton_titulo2_boton_ajuste_notis.grid(row=2, column=1, padx=170, pady=0, sticky='ew')
+
+        
+    def pulsar_boton_ajuste_notis_toplevel(self):
+        self.boton_ajuste_notis_toplevel = True
+        self.boton.destroy()
+        self.boton = tk.Button(self.config_notis, text='activado', command=self.pulsar_boton_ajuste_notis_toplevel_pero_desactiva)
+        self.boton.grid(row=1, column=1, padx=0, pady=0, sticky='ew')
+
+    def pulsar_boton_ajuste_notis_toplevel_pero_desactiva(self):
+        self.boton_ajuste_notis_toplevel = False
+        self.boton.destroy()
+        self.boton = tk.Button(self.config_notis, text='desactivado', command=self.pulsar_boton_ajuste_notis_toplevel)
+        self.boton.grid(row=1, column=1, padx=0, pady=0, sticky='ew')
+    
+    def tocar_boton_notificaciones_silenciadas_toplvl(self):
+        self.titulo_boton_ajuste_notis.destroy()
+        self.cuerpo_boton_ajuste_notis.destroy()
+        self.boton.destroy()
+        self.titulo2_boton_ajuste_notis.destroy()
+
+        self.boton_atras = ttk.Button(self.config_notis, command=self.pulsar_boton_atras, image=self.flechita_inversa_img)
+        self.boton_atras.grid(row=0, column=0, padx=0, sticky='ns', pady=0)
+
+        self.frame_notis_config_persona1_bot_ = ttk.LabelFrame(self.config_notis)
+        self.frame_notis_config_persona1_bot_.grid(row=1, column=1, padx=0, pady=0, sticky='ew')
+
+        notis_config_persona1_bot__foto = ttk.Label(self.frame_notis_config_persona1_bot_)
+        notis_config_persona1_bot__foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        notis_config_persona1_bot__nombre = ttk.Label(self.frame_notis_config_persona1_bot_, text='persona1_bot_', style='Nombree.TLabel')
+        notis_config_persona1_bot__nombre.grid(row=0, column=1, padx=0, pady=0)
+        notis_config_persona1_bot__usuario = ttk.Label(self.frame_notis_config_persona1_bot_, text='usuario1_bot_', style='Usuario.TLabel')
+        notis_config_persona1_bot__usuario.grid(row=0, column=2, padx=0, pady=0)
+        if  self.boton_pulsado_verificado == True:
+
+            notis_config_persona1_bot__button = tk.Button(self.frame_notis_config_persona1_bot_, command=self.pulsar_boton_silenciar_notis_verificado_activ, text='silenciado')
+            notis_config_persona1_bot__button.grid(row=0, column=3, padx=10, pady=0, sticky='ew')
+        elif  self.boton_pulsado_verificado == False:
+            notis_config_persona1_bot__button = tk.Button(self.frame_notis_config_persona1_bot_, command=self.pulsar_boton_silenciar_notis_verificado, text='silenciar')
+            notis_config_persona1_bot__button.grid(row=0, column=3, padx=10, pady=0, sticky='ew')
+
+        self.frame_notis_config_social_media_app_simulator = ttk.LabelFrame(self.config_notis)
+        self.frame_notis_config_social_media_app_simulator.grid(row=2, column=1, padx=0 ,pady=0, sticky='ew')
+
+        config_social_media_app_simulator_foto = ttk.Label(self.frame_notis_config_social_media_app_simulator)
+        config_social_media_app_simulator_foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        config_social_media_app_simulator_nombre = ttk.Label(self.frame_notis_config_social_media_app_simulator, text='social_media_app_simulator', style='Nombree.TLabel')
+        config_social_media_app_simulator_nombre.grid(row=0, column=1, padx=0, pady=0)
+        config_social_media_app_simulator_usuario = ttk.Label(self.frame_notis_config_social_media_app_simulator, text='@social_media_app_simulator', style='Usuario.TLabel')
+        config_social_media_app_simulator_usuario.grid(row=0, column=2, padx=0, pady=0)
+        if self.boton_pulsado_social_media_app_simulator == True:
+            config_social_media_app_simulator_button = tk.Button(self.frame_notis_config_social_media_app_simulator, command=self.pulsar_boton_silenciar_notis_social_media_app_simulator_activ, text='silenciado')
+            config_social_media_app_simulator_button.grid(row=0, column=3, padx=10, pady=0, sticky='ew')
+        elif self.boton_pulsado_social_media_app_simulator == False:
+            config_social_media_app_simulator_button = tk.Button(self.frame_notis_config_social_media_app_simulator, command=self.pulsar_boton_silenciar_notis_social_media_app_simulator, text='silenciar')
+            config_social_media_app_simulator_button.grid(row=0, column=3, padx=10, pady=0, sticky='ew')
+
+        self.frame_notis_config_hacienda = ttk.LabelFrame(self.config_notis)
+        self.frame_notis_config_hacienda.grid(row=3, column=1, padx=0, pady=0, sticky='ew')
+
+        config_hacienda_foto = ttk.Label(self.frame_notis_config_hacienda)
+        config_hacienda_foto.grid(row=0, rowspan=2, column=0, pady=3, padx=5)
+        config_hacienda_nombre = ttk.Label(self.frame_notis_config_hacienda, text='Hacienda', style='Nombree.TLabel')
+        config_hacienda_nombre.grid(row=0, column=1, padx=0, pady=0)
+        config_hacienda_usuario = ttk.Label(self.frame_notis_config_hacienda, text='@los_ladrones', style='Usuario.TLabel')
+        config_hacienda_usuario.grid(row=0, column=2, padx= 0, pady=0)
+        if self.boton_pulsado_menciones == True:
+            config_hacienda_button = tk.Button(self.frame_notis_config_hacienda,command=self.pulsar_boton_silenciar_notis_menciones_activ, text='silenciado' )
+            config_hacienda_button.grid(row=0, column=3, padx=0, pady=0, sticky='ew')
+        elif self.boton_pulsado_menciones == False:
+            config_hacienda_button = tk.Button(self.frame_notis_config_hacienda,command=self.pulsar_boton_silenciar_notis_menciones, text='silenciar' )
+            config_hacienda_button.grid(row=0, column=3, padx=0, pady=0, sticky='ew')
+
+        
+    
+
+
+    def pulsar_boton_atras(self):
+        try:
+            self.boton_atras.destroy()
+        except:
+            print(' ')
+            print('INFO: self.boton_atras no ha sido encontrado')
+        try:
+            self.frame_notis_config_persona1_bot_.destroy()
+        except:
+            print(' ')
+            print('INFO: self.frame_notis_config_persona1_bot_ no ha sido encontrado')
+        try:
+            self.frame_notis_config_hacienda.destroy()
+        except:
+            print(' ')
+            print('INFO:self.frame_notis_config_hacienda no ha sido encontrado')
+        try:
+            self.frame_notis_config_social_media_app_simulator.destroy()
+        except:
+            print(' ')
+            print('INFO: self.frame_notis_config_social_media_app_simulator no ha sido encontrado')
+        try:
+            self.label_no_hay_resultados.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.label_no_hay_resultados')
+        self.titulo_boton_ajuste_notis = ttk.Label(self.config_notis, text='filtro de calidad', style='Verification2.TLabel')
+        self.titulo_boton_ajuste_notis.grid(row=0, column=0, padx=0, pady=0,sticky='ew')
+        self.cuerpo_boton_ajuste_notis = ttk.Label(self.config_notis, text='Elige excluir contenidos como posts duplicados o automatizados. Esto no se aplica a las notificaciones de las cuentas que sigues o con las que hayas interactuado recientemente.')
+        self.cuerpo_boton_ajuste_notis.grid(row=1, column=0, padx=0, pady=0, sticky='ew')
+        if self.boton_ajuste_notis_toplevel == True:
+            self.boton = tk.Button(self.config_notis, text='activado', command=self.pulsar_boton_ajuste_notis_toplevel_pero_desactiva)
+            self.boton.grid(row=1, column=1, padx=0, pady=0, sticky='ew')
+        elif self.boton_ajuste_notis_toplevel == False:
+            self.boton = tk.Button(self.config_notis, text='desactivado', command=self.pulsar_boton_ajuste_notis_toplevel)
+            self.boton.grid(row=1, column=1, padx=0, pady=0, sticky='ew')
+        self.titulo2_boton_ajuste_notis = ttk.Label(self.config_notis, text='Notificaciones silenciadas', style='Verification2.TLabel')
+        self.titulo2_boton_ajuste_notis.grid(row=2, column=0, padx=0, pady=0, sticky='ew')
+        self.boton_titulo2_boton_ajuste_notis = ttk.Button(self.titulo2_boton_ajuste_notis, image=self.flechita_img, command=self.tocar_boton_notificaciones_silenciadas_toplvl)
+        self.boton_titulo2_boton_ajuste_notis.grid(row=2, column=1, padx=170, pady=0, sticky='ew')
+
+        
+
+
+
+
+
+
+
+    
+
+    #MARK: MSG Y DERIBADOS
+    def pulsar_boton_msg(self):
+        self.try_to_destroy_standar()
+        self.try_to_destroy_msg()
+        
+        self.frame_usuarios_para_mensagear = ttk.LabelFrame(self.posts_frame, text='MENSAJES')
+        self.frame_usuarios_para_mensagear.grid(row=0, column=0, sticky='ns')
+
+        self.mensagear_persona1_bot_ = ttk.Button(self.frame_usuarios_para_mensagear, compound='left', text='persona1_bot_', style='boton_foto.TButton', command=self.pulsar_boton_mensages_persona1_bot_)
+        self.mensagear_persona1_bot_.grid(row=0, column=0, sticky='ew', padx=0, pady=0)
+
+
+
+
+        
+        self.pulsar_boton_mensages_persona1_bot_()
+
+
+
+
+
+        
+        
+        
+    def pulsar_boton_mensages_persona1_bot_(self):
+        if self.currently_executing_msg_persona1_bot_ == False:    
+            self.try_to_destroy_msg()
+            if self.response_user_msg_persona1_bot__executed == False:
+                self.frame_chat_persona1_bot_ = ttk.LabelFrame(self.posts_frame, )
+                self.frame_chat_persona1_bot_.grid(row=0, column=1, sticky='ew', padx=0, pady=0)
+                self.label_invisible_mensajes1 = ttk.Label(self.frame_chat_persona1_bot_)
+                self.label_invisible_mensajes1.config(state='disabled')
+                self.label_invisible_mensajes1.grid(row=0, column=0, padx=0, pady=0)
+                self.content_frame_top_chat_persona1_bot_ = ttk.Label(self.frame_chat_persona1_bot_, text='usuario1_bot_  --Ultima vez conectado: 30 de abril de 1945', )
+                self.content_frame_top_chat_persona1_bot_.grid(row=0, column=1, padx=0, pady=0 )
+                self.label_invisible_mensajes2 = ttk.Label(self.frame_chat_persona1_bot_)
+                self.label_invisible_mensajes2.config(state='disabled')
+                self.label_invisible_mensajes2.grid(row=0, column=2, padx=210, pady=0) #REMPLAZAR ESTO-------------------------------------------------------------------------------------------
+
+                self.frame_content_chat_persona1_bot_ = ttk.LabelFrame(self.frame_chat_persona1_bot_)
+                self.frame_content_chat_persona1_bot_.grid(row=1, column=0, padx=0, pady=0)
+                self.primer_mensaje_persona1_bot_ =ttk.Label(self.frame_content_chat_persona1_bot_, text='buenos dias!', compound='left')
+                self.primer_mensaje_persona1_bot_.grid()
+                #contenido frame entry escribir mensajes
+                self.frame_buscar_msg = ttk.LabelFrame(self.frame_chat_persona1_bot_)
+                self.frame_buscar_msg.grid(row=39, column=0, columnspan=33, padx=0, pady=0)
+                self.foto_escribir_buscar_mensaje = ttk.Label(self.frame_buscar_msg, image=self.profile2_img)
+                self.foto_escribir_buscar_mensaje.grid(row=0, column=1, padx=10, pady=0)
+                self.escribir_buscar_mensaje = ttk.Entry(self.frame_buscar_msg) #ENTRY
+                self.escribir_buscar_mensaje.grid(row=0, column=2, padx=0, pady=20, sticky='ew')
+                self.pad_escribir_buscar_invisible_mensaje = ttk.Label(self.escribir_buscar_mensaje)
+                self.pad_escribir_buscar_invisible_mensaje.grid(padx=590, pady=0, row=0, column=0)
+                self.pad_escribir_buscar_invisible_mensaje.config(state='disabled')
+                self.boton_enter_mensaje = ttk.Button(self.frame_buscar_msg, image=self.flechita_img, command=self.entry_msg_persona1_bot_)
+                self.boton_enter_mensaje.grid(row=0, column=3, sticky='ew')
+            else:
+                print(' ')
+                print('LOG: self.response_user_msg_persona1_bot__executed = True')
+                self.frame_chat_persona1_bot_ = ttk.LabelFrame(self.posts_frame, )
+                self.frame_chat_persona1_bot_.grid(row=0, column=1, sticky='ew', padx=0, pady=0)
+                self.label_invisible_mensajes1 = ttk.Label(self.frame_chat_persona1_bot_)
+                self.label_invisible_mensajes1.config(state='disabled')
+                self.label_invisible_mensajes1.grid(row=0, column=0, padx=0, pady=0)
+                self.content_frame_top_chat_persona1_bot_ = ttk.Label(self.frame_chat_persona1_bot_, text='usuario1_bot_  --Ultima vez conectado: ahora mismo', )
+                self.content_frame_top_chat_persona1_bot_.grid(row=0, column=1, padx=0, pady=0 )
+                self.label_invisible_mensajes2 = ttk.Label(self.frame_chat_persona1_bot_)
+                self.label_invisible_mensajes2.config(state='disabled')
+                self.label_invisible_mensajes2.grid(row=0, column=2, padx=210, pady=0)#REMPLAZAR ESTO-------------------------------------------------------------------------------------------
+                
+                self.frame_content_chat_persona1_bot_ = ttk.LabelFrame(self.frame_chat_persona1_bot_)
+                self.frame_content_chat_persona1_bot_.grid(row=1, column=0, padx=0, pady=0)
+                self.primer_mensaje_persona1_bot_ =ttk.Label(self.frame_content_chat_persona1_bot_, text='hola buenos dias', compound='left')
+                self.primer_mensaje_persona1_bot_.grid()
+                self.frame_tu_mensaje_persona1_bot_ = ttk.LabelFrame(self.frame_chat_persona1_bot_)
+                self.frame_tu_mensaje_persona1_bot_.grid(row=2, column=2, padx=0, pady=0) #por esta zona primero lo que se hace es poner tu mensaje que le habias enviado y despues el la respuesta de persona1_bot_
+                self.tu_mensaje_persona1_bot_ = ttk.Label(self.frame_tu_mensaje_persona1_bot_, text=self.texto_del_mensaje_persona1_bot_, image=self.profile2_img, compound='left')
+                self.tu_mensaje_persona1_bot_.grid()
+                self.frame_content_chat_persona1_bot__response = ttk.LabelFrame(self.frame_chat_persona1_bot_)
+                self.frame_content_chat_persona1_bot__response.grid(row=3, column=0, padx=0, pady=0)
+                if self.easter_egg_executed == True:
+                    self.response_persona1_bot_ = ttk.Label(self.frame_content_chat_persona1_bot__response, text='Hola. El codigo de acceso es: 8571. Pero esto queda entre nosotros.', compound='left')
+                    self.response_persona1_bot__linia2 = ttk.Label(self.frame_content_chat_persona1_bot__response, text='      Nadie puede saberlo. Nunca has tenido esta conversación conmigo.')
+                    self.response_persona1_bot__linia2.grid(row=1)
+                    self.response_persona1_bot_.grid()
+                    print(' ')
+                    print('INFO: easter egg ejecutado :)')
+                elif self.easter_egg_executed == False:
+                    self.response_persona1_bot_ = ttk.Label(self.frame_content_chat_persona1_bot__response, text='Adios', compound='left')
+                    self.response_persona1_bot_.grid()
+                
+                self.frame_buscar_msg = ttk.LabelFrame(self.frame_chat_persona1_bot_)
+                self.frame_buscar_msg.grid(row=39, column=0, columnspan=33, padx=0, pady=0)
+                self.foto_escribir_buscar_mensaje = ttk.Label(self.frame_buscar_msg, image=self.profile2_img)
+                self.foto_escribir_buscar_mensaje.grid(row=0, column=1, padx=10, pady=0)
+                self.escribir_buscar_mensaje = ttk.Entry(self.frame_buscar_msg) 
+                self.escribir_buscar_mensaje.grid(row=0, column=2, padx=0, pady=20, sticky='ew')
+                self.pad_escribir_buscar_invisible_mensaje = ttk.Label(self.escribir_buscar_mensaje)
+                self.pad_escribir_buscar_invisible_mensaje.grid(padx=590, pady=0, row=0, column=0)
+                self.pad_escribir_buscar_invisible_mensaje.config(state='disabled')
+                self.boton_enter_mensaje = ttk.Button(self.frame_buscar_msg, image=self.flechita_img, command=self.entry_msg_persona1_bot_)
+                self.boton_enter_mensaje.grid(row=0, column=3, sticky='ew')
+                self.system_msg_you_are_blocked = ttk.Label(self.frame_chat_persona1_bot_, text='(usuario1_bot_ te ha bloqueado)')
+                self.system_msg_you_are_blocked.grid(row=4, column=1, padx=0, pady=0)
+        else:
+            pass    
+
+
+    #timing persona1_bot_:
+    def entry_msg_persona1_bot_(self):
+        self.currently_executing_msg_persona1_bot_ = True
+        if self.response_user_msg_persona1_bot__executed == False:
+            try:
+                self.frame_tu_mensaje_persona1_bot_.destroy()
+            except:
+                print(' ')
+                print('INFO: self.frame_tu_mensaje_persona1_bot_ not found')
+            self.texto_del_mensaje_persona1_bot_ = self.escribir_buscar_mensaje.get()
+            self.escribir_buscar_mensaje.delete(0, 'end')
+            
+            self.frame_tu_mensaje_persona1_bot_ = ttk.LabelFrame(self.frame_chat_persona1_bot_)
+            self.frame_tu_mensaje_persona1_bot_.grid(row=2, column=2, padx=0, pady=0)
+            self.tu_mensaje_persona1_bot_ = ttk.Label(self.frame_tu_mensaje_persona1_bot_, text=self.texto_del_mensaje_persona1_bot_, image=self.profile2_img, compound='left')
+            self.tu_mensaje_persona1_bot_.grid()
+            self.frame_chat_persona1_bot_.after(2000, self.response_user_msg_persona1_bot_1)  # Retrasa la ejecución de response_user_msg_persona1_bot_1 en 2000 milisegundos (2 segundos)
+        else:
+            pass
+
+    def response_user_msg_persona1_bot_1(self):
+        
+        
+        try:
+            self.content_frame_top_chat_persona1_bot_.destroy()
+        except:
+            print(' ')
+            print('INFO: self.content_frame_top_chat_persona1_bot_ not found')
+        self.content_frame_top_chat_persona1_bot__actually_connected =  ttk.Label(self.frame_chat_persona1_bot_, text='usuario1_bot_  --Ultima vez conectado: ahora mismo', )
+        self.content_frame_top_chat_persona1_bot__actually_connected.grid(row=0, column=1, padx=0, pady=0 )
+        self.frame_chat_persona1_bot_.after(2000, self.response_user_msg_persona1_bot_2)  # Retrasa la ejecución de response_user_msg_persona1_bot_1 en 2000 milisegundos (2 segundos)
+    def response_user_msg_persona1_bot_2(self):
+    
+        try:
+            self.content_frame_top_chat_persona1_bot__actually_connected.destroy()
+        except:
+            print(' ')
+            print('INFO: self.content_frame_top_chat_persona1_bot__actually_connected not found')
+
+        self.content_frame_top_chat_persona1_bot__writting = ttk.Label(self.frame_chat_persona1_bot_, text='usuario1_bot_  --Escribiendo...', )
+        self.content_frame_top_chat_persona1_bot__writting.grid(row=0, column=1, padx=0, pady=0)
+        self.frame_chat_persona1_bot_.after(2000, self.response_user_msg_persona1_bot_3)
+    def response_user_msg_persona1_bot_3(self):
+        
+        try:
+            self.content_frame_top_chat_persona1_bot__writting.destroy()
+        except:
+            print(' ')
+            print('INFO:self.content_frame_top_chat_persona1_bot__writting not found')
+        self.frame_response_persona1_bot_ = ttk.LabelFrame(self.frame_chat_persona1_bot_)
+        self.frame_response_persona1_bot_.grid(row=3, column=0, padx=0, pady=0)
+        if self.texto_del_mensaje_persona1_bot_ == 'Dame el codigo de acceso para el misil interbalistico de la santaclaus_company.':
+            self.response_persona1_bot_ = ttk.Label(self.frame_response_persona1_bot_, text='Hola. El codigo de acceso es: 8571. Pero esto queda entre nosotros.', compound='left')
+            self.response_persona1_bot__linia2 = ttk.Label(self.frame_response_persona1_bot_, text='      Nadie puede saberlo. Nunca has tenido esta conversación conmigo.')
+            self.response_persona1_bot_.grid()
+            self.response_persona1_bot__linia2.grid(row=1)
+            print(' ')
+            print('INFO: easter egg ejecutado :)')
+            self.easter_egg_executed = True
+        else:
+            self.response_persona1_bot_ = ttk.Label(self.frame_response_persona1_bot_, text='Adios', compound='left')
+            self.response_persona1_bot_.grid()
+        self.content_frame_top_chat_persona1_bot__actually_connected2 =  ttk.Label(self.frame_chat_persona1_bot_, text='usuario1_bot_  --Ultima vez conectado: ahora mismo', )
+        self.content_frame_top_chat_persona1_bot__actually_connected2.grid(row=0, column=1, padx=0, pady=0 )
+
+        self.system_msg_you_are_blocked = ttk.Label(self.frame_chat_persona1_bot_, text='(usuario1_bot_ te ha bloqueado)')
+        self.system_msg_you_are_blocked.grid(row=4, column=1, padx=0, pady=0)
+        self.response_user_msg_persona1_bot__executed = True
+        self.currently_executing_msg_persona1_bot_ = False
+
+
+
+
+        
+
+        
+
+
+        
+    #DARLE AL BOTON DE BUSCAR
+
+    def pulsar_boton_buscar_frame_r(self):
+        self.try_to_destroy_standar()
+        
+        self.label_no_hay_resultados = ttk.Label(self.posts_frame, text='No hay resultados', style='Title.TLabel')
+        self.label_no_hay_resultados.grid(row=0, column=0, padx=670, pady=300)
+    def skibidi_toilet(self):
+        pass
+    def try_to_destroy_msg(self): #aplicar para los mensajes
+        try:
+            self.frame_chat_persona1_bot_.destroy()
+        except:
+            print(' ')
+            print('INFO: self.frame_chat_persona1_bot_ not found')
+
+
+    #MARK: LISTAS
+    def press_list_button(self):
+        
+        self.try_to_destroy_standar()
+    
+    def try_to_destroy_standar(self): #sirve para casi todos los botones de la izquierda (revisar un poco antes de aplicar) #el orden de destrucción es cronologico (arriba más viejo abajo nuevo)
+        try:
+
+            self.frame_para_ti.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_para_ti')
+        try:
+            self.frame_para_ti2.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_para_ti2')
+        try:
+            print(' ')
+            self.frame_siguiendo2.destroy()
+        except:
+            print('INFO: no se ha encontrado self.frame_siguiendo2')
+        
+        try:
+            self.aviso_home.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.aviso_home')
+        try:
+            self.frame_explorar.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.explorar')
+        try:
+            self.frame_categorias_titulo_config_notificaciones.destroy()
+        except:
+            print(' ')
+            print('INFO:no se ha encontrado self.frame_categorias_titulo_config_notificacion')
+        try:
+            self.frame_para_ti_o_siguiendo.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_para_ti_o_siguiendo')
+        try:
+            self.frame_categorias_titulo_config_notificaciones.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_categorias_titulo_config_notificacion')
+        try:
+            self.frame_noti_hacienda.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_noti_hacienda')
+        try:
+            self.frame_noti_persona1_bot_.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_noti_persona1_bot_')
+        try:
+            self.frame_noti_social_media_app_simulator.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_noti_social_media_app_simulator')
+        try:
+            self.frame_todas_notis_verificado_o_menciones.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.frame_todas_notis_verificado_o_menciones')
+        try:
+            self.label_no_hay_resultados.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.label_no_hay_resultados')
+        try:
+            self.frame_usuarios_para_mensagear.destroy()
+        except:
+            print(' ')
+            print('INFO:self.frame_usuarios_para_mensagear not found')
+        try:
+            self.frame_chat_persona1_bot_.destroy()
+        except:
+            print('INFO: self.frame_chat_persona1_bot_ not found')
+        
+
+        try:
+            self.frame_usuario.destroy()
+        except:
+            print(' ')
+            print('INFO: self.frame_usuario not found')
+        self.try_to_destroy_msg() #DESTROY MSG
+    #MARK: USUARIO
+    def usuario(self): #función principal
+        self.try_to_destroy_standar()
+        #variables necesarias
+        self.entry_var_usuario = tk.StringVar()
+        self.place_holder_text_usuario='Introduzca el nombre de usuario'
+        self.place_holder_text_contrasenya='Introduzca la contraseña'
+        self.entry_var_contrasenya = tk.StringVar()
+        #frames y sus grids
+        self.frame_usuario = ttk.LabelFrame(self.posts_frame, text='USUARIO')
+        _frame_credenciales = tk.LabelFrame(self.frame_usuario, )
+        _frame_publicaciones_recientes = tk.LabelFrame(self.frame_usuario,)
+        
+        self.frame_usuario.grid(row=0, column=0, padx=0)
+        _frame_credenciales.grid(row=0, column=0, sticky='EW', padx=0)
+        _frame_publicaciones_recientes.grid(row=1, column=0, sticky='EW')
+        #contenido frame_credenciales y sus grids
+        _imagen_credenciales = ttk.Label(_frame_credenciales, image=self.profile2_img,)
+        self.entry_nombre_usuario = ttk.Entry(_frame_credenciales, textvariable=self.entry_var_usuario, style="placeholder.TEntry",) #el estilo placeholder es para los entrys con focus
+        self.entry_nombre_usuario.insert(0, self.place_holder_text_usuario)
+        self.entry_nombre_usuario.bind("<FocusIn>", self.entry_focus_in_usuario) 
+        self.entry_nombre_usuario.bind("<FocusOut>", self.entry_focus_out_usuario)
+        self.entry_contrasenya = ttk.Entry(_frame_credenciales, textvariable=self.entry_var_contrasenya,style='placeholder.TEntry') 
+        self.entry_contrasenya.insert(0, self.place_holder_text_contrasenya)
+        self.entry_contrasenya.bind("<FocusIn>", self.entry_focus_in_contrasenya)
+        self.entry_contrasenya.bind('<FocusOut>', self.entry_focus_out_contrasenya)
+        _boton_registrarse = ttk.Button(_frame_credenciales, text='REGISTRARSE', command=self.register)
+        _boton_iniciar_sesion = ttk.Button(_frame_credenciales, text='INICIAR SESIÓN', command=self.login)
+        __boton_cerrar_sesion = ttk.Button(_frame_credenciales, text='CERRAR SESIÓN', command=self.cerrar_sesion)
+        _imagen_credenciales.grid(row=1, column=0, rowspan=2)
+        self.entry_nombre_usuario.grid(row=1, column=1, sticky='EW', ipadx=30) #para poner espaciado interno utilizar ipadx-ipady
+        self.entry_contrasenya.grid(row=2, column=1, ipadx=30, sticky='EW')
+        _boton_registrarse.grid(row=3, column=0, )
+        _boton_iniciar_sesion.grid(row=3, column=1,)
+        
+
+        
+    #subfunciónes
+    def entry_focus_in_usuario(self, event):
+        if self.entry_var_usuario.get() == self.place_holder_text_usuario:
+            self.entry_var_usuario.set("")
+    def entry_focus_out_usuario(self, event):
+        if self.entry_var_usuario.get() == "":
+            self.entry_var_usuario.set(self.place_holder_text_usuario)
+    def entry_focus_in_contrasenya(self, event):
+        if self.entry_var_contrasenya.get() == self.place_holder_text_contrasenya:
+            self.entry_var_contrasenya.set("")
+    def entry_focus_out_contrasenya(self, event):
+        if self.entry_var_contrasenya.get() == "":
+            self.entry_var_contrasenya.set(self.place_holder_text_contrasenya)
+    
+    def register(self):
+        usuario = self.entry_nombre_usuario.get()
+        contraseña = self.entry_contrasenya.get()
+        if usuario in self.user:
+            __ventana_ya_existe_alguien_con_ese_nombre = tk.Toplevel()
+            __ventana_ya_existe_alguien_con_ese_nombre.title('Aviso')
+            __label_ya_existe_alugien_con_ese_nombre= ttk.Label(__ventana_ya_existe_alguien_con_ese_nombre, text='ya existe alguien con ese nombre de usuario')
+            __label_ya_existe_alugien_con_ese_nombre.pack()
+        else:
+            self.user[usuario] = contraseña
+            print(' ')
+            print('Usuario registrado:', usuario)
+            print(' ')
+            print('usuarios registrados: ',self.user)
+            self.logeado = True
+            try: #borra lista de usuarios logeados actualmente
+                self.user_actually_loged.clear()
+                self.user_actually_loged.clear()
+            except:
+                print(' ')
+                print('INFO: no hay nada en la lista de self.user_actually_loged')
+            clave = list(self.user.keys())[-1] #añade el nombre de usuario de el usuario actualmente logeado a una lista para comprobar despues si ya esta logeado para decirle eso cuando intente volvera a iniciar sesión
+            self.user_actually_loged.append(clave)
+            __ventana_registro_exitoso = tk.Toplevel()
+            __ventana_registro_exitoso.title('Aviso')
+            __label_registro_exitoso = ttk.Label(__ventana_registro_exitoso, text=('te has registrado y se te ha iniciado sesión automaticamente,', usuario))
+            __label_registro_exitoso.pack()
+            print(' ')
+            print('se ha agregado a self.user_actually_loged: ', self.user_actually_loged)
+            self.nombre_usuario_publico = usuario
+            self.profile2.destroy()
+            self.profile2 = ttk.Button(self.menu_frame, image=self.profile2_img, compound='left', text=self.nombre_usuario_publico, style="Custom.TButton",command=self.usuario)
+            self.profile2.grid(row=9, column=0,pady=390, sticky="ew")
+        
+    def login(self):
+        usuario = self.entry_nombre_usuario.get()
+        contraseña = self.entry_contrasenya.get()
+        #comprovar si existe el usuario en user
+        if usuario in self.user: #si el usuario inputeado esta en el diccionario de usuarios
+            if self.user[usuario] == contraseña: #comprobar si el valor de [usuario] (que es la contraseña) es igual a la contraseña que se ha inputeado
+                if usuario in self.user_actually_loged: #comprobar si el usuario esta en la lista de usuarios logeados actualmente
+                
+                    __ventana_ya_estas_loged = tk.Toplevel()
+                    __ventana_ya_estas_loged.title('Aviso')
+                    __label_ya_estas_loged = ttk.Label(__ventana_ya_estas_loged, text=('Ya estas logeado,', usuario))
+                    __label_ya_estas_loged.pack()
+                else:    
+                    self.logeado = True
+                    
+                    __ventana_loged_succesfuly = tk.Toplevel()
+                    __ventana_loged_succesfuly.title('Aviso')
+                    __label_loged_succesfuly = ttk.Label(__ventana_loged_succesfuly, text=('Inicio de sesión exitoso para ti,', usuario))
+                    __label_loged_succesfuly.pack()
+
+                    try:
+                        self.user_actually_loged.clear()
+                        self.user_actually_loged.clear()
+                    except:
+                        print(' ')
+                        print('INFO: no hay nada en la lista de self.user_actually_loged')
+                    clave = list(self.user.keys())[-1] #añade el nombre de usuario de el usuario actualmente logeado a una lista para comprobar despues si ya esta logeado para decirle eso cuando intente volvera a iniciar sesión
+                    self.user_actually_loged.append(clave)
+                    print(' ')
+                    print('se ha agregado a self.user_actually_loged: ', self.user_actually_loged)
+                    self.nombre_usuario_publico = usuario
+                    self.profile2.destroy()
+                    self.profile2 = ttk.Button(self.menu_frame, image=self.profile2_img, compound='left', text=self.nombre_usuario_publico, style="Custom.TButton",command=self.usuario)
+                    self.profile2.grid(row=9, column=0,pady=390, sticky="ew")
+            else:
+                
+                __ventana_info_contra_incorrecta = tk.Toplevel()
+                __ventana_info_contra_incorrecta.title('Aviso')
+                __label_aviso_contra_incorrecta = ttk.Label(__ventana_info_contra_incorrecta, text=('Contraseña incorrecta para', usuario))
+                __label_aviso_contra_incorrecta.pack()
+
+        else:
+            
+            __ventana_info_such_user_no_exist = tk.Toplevel()
+            __ventana_info_such_user_no_exist.title('Aviso')
+            __label_aviso_such_user_no_exist = ttk.Label(__ventana_info_such_user_no_exist, text = ('El usuario', usuario, 'no existe'))
+            __label_aviso_such_user_no_exist.pack()
+        print(' ')
+        print(self.user)
+    def cerrar_sesion(self,):
+        self.user.clear()
+            
+
+    
+        
+    #MARK: MAS OPCIONES
+    def try_to_destroy_ventanas(self):
+        try:
+            
+            self.ventana_emergente.destroy() #para que quede mas bonito
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.ventana_emergente')
+        try:
+            self.ventana_calc.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.ventana_calc')
+        try:
+            self.ventana_conversor_de_unidades.destroy()
+        except:
+            print(' ')
+            print('INFO: no se ha encontrado self.ventana_conversor_de_unidades')
+        try:
+            self.ventana_mas_opciones.destroy()
+        except:
+            print(' ')
+            print('INFO: self.ventana_mas_opciones no se ha encontrado')
+
+    def press_mas_opciones(self):
+        self.try_to_destroy_ventanas()
+        self.ventana_mas_opciones = tk.Toplevel(window) #se crea la ventana, mas abajo se van poniendo los botones que iniciaran sus respectivas ventanas que destruiran la venana mas opciones
+        self.ventana_mas_opciones.title('Más opciones')
+        self.ventana_mas_opciones.geometry('+500+200')
+        self.boton_calc = ttk.Button(self.ventana_mas_opciones, text='calculadora', padding=50, command=self.press_calc) #poner icono calculadora
+        self.boton_calc.grid(row=0)
+        self.saludo_poxos = ttk.Label(self.ventana_mas_opciones, text='Copyright: Sergi Pesaferrer')
+        self.saludo_poxos.grid(row=1, column=0)
+
+        self.boton_conversor = ttk.Button(self.ventana_mas_opciones, text='conversor de unidades', padding=(29, 50, 29, 50), command=self.conversor_de_unidades) #poner icono de nose
+        self.boton_conversor.grid(column=1, row=0)
+    def press_calc(self):
+        self.try_to_destroy_ventanas()
+        ventana = tk.Toplevel(window)
+        ventana.title("Calculadora científica")
+        ventana.geometry("430x600")
+        ventana.resizable(False, False)
+
+        #pantalla
+
+        expresion = tk.StringVar()
+
+        pantalla = tk.Entry(
+            ventana,
+            textvariable=expresion,
+            font=("Arial", 24),
+            justify="right",
+            bd=10,
+            relief="sunken"
+        )
+        pantalla.pack(
+            fill="x",
+            padx=10,
+            pady=10,
+            ipady=10
+        )
+
+        #funciones de la calculadora
+
+        def pulsar(valor):
+            if valor == "=":
+                calcular()
+
+            elif valor == "C":
+                expresion.set("")
+
+            elif valor == "⌫":
+                expresion.set(expresion.get()[:-1])
+
+            elif valor == "×":
+                expresion.set(expresion.get() + "*")
+
+            elif valor == "÷":
+                expresion.set(expresion.get() + "/")
+
+            elif valor == "^":
+                expresion.set(expresion.get() + "**")
+
+            elif valor == "√":
+                expresion.set(expresion.get() + "sqrt(")
+
+            elif valor == "x²":
+                expresion.set(expresion.get() + "**2")
+
+            elif valor == "π":
+                expresion.set(expresion.get() + "pi")
+
+            else:
+                expresion.set(expresion.get() + valor)
+
+            pantalla.focus_set()
+
+        def calcular():
+            try:
+                resultado = eval(
+                    expresion.get(),
+                    {"__builtins__": {}},
+                    {
+                        "sin": math.sin,
+                        "cos": math.cos,
+                        "tan": math.tan,
+                        "asin": math.asin,
+                        "acos": math.acos,
+                        "atan": math.atan,
+                        "sqrt": math.sqrt,
+                        "log": math.log10,
+                        "ln": math.log,
+                        "exp": math.exp,
+                        "pi": math.pi,
+                        "e": math.e
+                    }
+                )
+
+                if isinstance(resultado, float):
+                    if resultado.is_integer():
+                        resultado = int(resultado)
+                    else:
+                        resultado = round(resultado, 12)
+
+                expresion.set(str(resultado))
+
+            except Exception:
+                expresion.set("Error")
+
+        #frame de los botones
+        frame_botones = tk.Frame(ventana)
+        frame_botones.pack(
+            expand=True,
+            fill="both",
+            padx=10,
+            pady=5
+        )
+
+        botones = [
+            ["sin", "cos", "tan", "√"],
+            ["asin", "acos", "atan", "x²"],
+            ["log", "ln", "exp", "^"],
+            ["π", "e", "(", ")"],
+            ["7", "8", "9", "÷"],
+            ["4", "5", "6", "×"],
+            ["1", "2", "3", "-"],
+            ["0", ".", "=", "+"],
+            ["C", "⌫"]
+        ]
+
+        #crear botones
+        for fila, fila_botones in enumerate(botones):
+
+            for columna, texto in enumerate(fila_botones):
+
+                boton = tk.Button(
+                    frame_botones,
+                    text=texto,
+                    font=("Arial", 14, "bold"),
+                    command=lambda x=texto: pulsar(x)
+                )
+
+                boton.grid(
+                    row=fila,
+                    column=columna,
+                    sticky="nsew",
+                    padx=3,
+                    pady=3
+                )
+
+        
+        for columna in range(4):
+            frame_botones.columnconfigure(
+                columna,
+                weight=1
+            )
+
+        for fila in range(len(botones)):
+            frame_botones.rowconfigure(
+                fila,
+                weight=1
+            )
+
+        #teclado
+        ventana.bind(
+            "<Return>",
+            lambda event: calcular()
+        )
+
+        ventana.bind(
+            "<Escape>",
+            lambda event: ventana.destroy()
+        )
+
+        pantalla.focus_set()
+
+
+
+
+
+
+
+
+   
+
+    #MARK: CONVERSOR DE UNIDADES
+    def conversor_de_unidades(self):
+        self.try_to_destroy_ventanas()
+        #inicializaciones
+        self.ventana_conversor_de_unidades =tk.Tk() 
+        self.ventana_conversor_de_unidades.title('Conversor de unidades. Codigo abierto.')
+        #moneda
+        self.frame_moneda = ttk.LabelFrame(self.ventana_conversor_de_unidades, text='MONEDAS',)
+        self.frame_moneda.grid(row=0, column=0, sticky='NS', padx=50, pady=50) #frame moneda, utilizar el padx y pady igual para los demas frames
+        quiero_convertir_label = ttk.Label(self.frame_moneda, text='Quiero convertir:',)
+        quiero_convertir_label.grid(row=1, column=0,)
+        self.entry_moneda1 = ttk.Entry(self.frame_moneda,)
+        self.entry_moneda1.grid(row=2, column=0, columnspan=2, sticky='EW') #columnspan standarizado
+        #menu desplegable moneda1
+        self.selected_option_moneda1 = tk.StringVar() #almacenar seleccion
+        self.menu_desplegable_moneda1 = ttk.Combobox(
+            self.frame_moneda,
+            textvariable=self.selected_option_moneda1,
+            state="readonly",
+            values=["euro, €", "dolar, $", "peseta"]
+        )
+
+        self.menu_desplegable_moneda1.grid(row=3, column=0, pady=5)
+        a = ttk.Label(self.frame_moneda, text='A:',)
+        a.grid(row=4, column=0,)
+        #menu desplegable moneda 2 (el segundo menu desplegable)
+        self.selected_option_moneda2 = tk.StringVar() #almacenar seleccion
+        self.menu_desplegable_moneda2 = ttk.Combobox(
+            self.frame_moneda,
+            textvariable=self.selected_option_moneda2,
+            state="readonly",
+            values=["euro, €", "dolar, $", "peseta",]
+        )
+        self.menu_desplegable_moneda2.grid(row=5, column=0, pady=5)
+
+        self.entry_resultado_moneda = ttk.Entry(self.frame_moneda, )
+        self.entry_resultado_moneda.grid(row=6, column=0, columnspan=2, sticky='EW')
+        self.boton_resultado_moneda = ttk.Button(self.frame_moneda, command=self.calcular_conversor_de_unidades, text='Calcular')
+        self.boton_resultado_moneda.grid(row=7, column=0, pady=0)
+        #DISTANCIA
+        self.frame_distancia = ttk.LabelFrame(self.ventana_conversor_de_unidades, text='DISTANCIA',)
+        self.frame_distancia.grid(row=0, column=1, sticky='NS', padx=50, pady=50) #frame moneda, utilizar el padx y pady igual para los demas frames
+        quiero_convertir_label2 = ttk.Label(self.frame_distancia, text='Quiero convertir:',)
+        quiero_convertir_label2.grid(row=1, column=0,)
+        self.entry_distancia1 = ttk.Entry(self.frame_distancia,)
+        self.entry_distancia1.grid(row=2, column=0, columnspan=2, sticky='EW') #columnspan standarizado
+        #menu desplegable distancia1
+        self.selected_option_distancia1 = tk.StringVar() #almacenar seleccion
+        self.menu_desplegable_distancia1 = ttk.Combobox(
+            self.frame_distancia,
+            textvariable=self.selected_option_distancia1,
+            state="readonly",
+            values=["SISTEMA METRICO","mm", "cm", "m", "km", "SISTEMA IMPERIAL", "pulgada", "pie", "yarda", "milla", ]
+        )
+
+        self.menu_desplegable_distancia1.grid(row=3, column=0, pady=5)
+        a2 = ttk.Label(self.frame_distancia, text='A:',)
+        a2.grid(row=4, column=0,)
+        #menu desplegable moneda 2 (el segundo menu desplegable)
+        self.selected_option_distancia2 = tk.StringVar() #almacenar seleccion
+        self.menu_desplegable_distancia2 = ttk.Combobox(
+            self.frame_distancia,
+            textvariable=self.selected_option_distancia2,
+            state="readonly",
+            values=["SISTEMA METRICO","mm", "cm", "m", "km", "SISTEMA IMPERIAL", "pulgada", "pie", "yarda", "milla", ]
+        )
+        self.menu_desplegable_distancia2.grid(row=5, column=0, pady=5)
+
+        self.entry_resultado_distancia = ttk.Entry(self.frame_distancia, )
+        self.entry_resultado_distancia.grid(row=6, column=0, columnspan=2, sticky='EW')
+        self.boton_resultado_distancia = ttk.Button(self.frame_distancia, command=self.calcular_conversor_de_unidades, text='Calcular')
+        self.boton_resultado_distancia.grid(row=7, column=0, pady=0)
+
+        aviso_conversor = ttk.Label(self.ventana_conversor_de_unidades, text="Datos de el conversor de monedas actualizado a 11/12/2023", padding=(0, 0, 0, 0))
+        aviso_conversor.grid(row=1)
+
+
+    def calcular_conversor_de_unidades(self):
+        #moneda
+        if self.menu_desplegable_moneda1.get() == "euro, €" and self.menu_desplegable_moneda2.get() == "dolar, $":
+            self.entry_resultado_moneda.delete(0, tk.END)
+            self.entry_resultado_moneda.insert(0, int(self.entry_moneda1.get()) * 1.07560,)
+        elif self.menu_desplegable_moneda1.get() =="dolar, $" and self.menu_desplegable_moneda2.get() == "euro, €":
+            self.entry_resultado_moneda.delete(0, tk.END)
+            self.entry_resultado_moneda.insert(0, int(self.entry_moneda1.get()) / 1.07560,)
+        
+        if self.menu_desplegable_moneda1.get() == "euro, €" and self.menu_desplegable_moneda2.get() == "peseta":
+            self.entry_resultado_moneda.delete(0, tk.END)
+            self.entry_resultado_moneda.insert(0, int(self.entry_moneda1.get()) * 166.386)
+        elif self.menu_desplegable_moneda1.get() == "peseta" and self.menu_desplegable_moneda2.get() == "euro, €":
+            self.entry_resultado_moneda.delete(0, tk.END)
+            self.entry_resultado_moneda.insert(0, int(self.entry_moneda1.get()) / 166.386)
+
+        if self.menu_desplegable_moneda1.get() == "dolar, $" and self.menu_desplegable_moneda2.get() == "peseta":
+            self.entry_resultado_moneda.delete(0, tk.END)
+            self.entry_resultado_moneda.insert(0, int(self.entry_moneda1.get()) * 166.94000)
+        elif self.menu_desplegable_moneda1.get() == "peseta" and self.menu_desplegable_moneda2.get() == "dolar, $":
+            self.entry_resultado_moneda.delete(0, tk.END)
+            self.entry_resultado_moneda.insert(0, int(self.entry_moneda1.get()) / 166.94000)
+        #distancia
+        if self.menu_desplegable_distancia1.get() == "mm" and self.menu_desplegable_distancia2.get() == "pulgada":
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 0.0393701)
+        elif self.menu_desplegable_distancia1.get() == 'pulgada' and self.menu_desplegable_distancia2.get() == 'mm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) /0.0393701)
+
+        elif self.menu_desplegable_distancia1.get() == 'mm' and self.menu_desplegable_distancia2.get() == 'pie':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 0.00328084)
+        elif self.menu_desplegable_distancia1.get() == 'pie' and self.menu_desplegable_distancia2.get() == 'mm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 0.00328084)
+
+        elif self.menu_desplegable_distancia1.get() == 'mm' and self.menu_desplegable_distancia2.get() == 'yarda':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 0.00109361)
+        elif self.menu_desplegable_distancia1.get() == 'yarda' and self.menu_desplegable_distancia2.get() == 'mm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 0.00109361)
+        #distancia IA
+        elif self.menu_desplegable_distancia1.get() == 'mm' and self.menu_desplegable_distancia2.get() == 'cm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 10)
+        elif self.menu_desplegable_distancia1.get() == 'cm' and self.menu_desplegable_distancia2.get() == 'mm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 10)
+
+        elif self.menu_desplegable_distancia1.get() == 'mm' and self.menu_desplegable_distancia2.get() == 'm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 1000)
+        elif self.menu_desplegable_distancia1.get() == 'm' and self.menu_desplegable_distancia2.get() == 'mm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 1000)
+
+        elif self.menu_desplegable_distancia1.get() == 'mm' and self.menu_desplegable_distancia2.get() == 'km':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 1000000)
+        elif self.menu_desplegable_distancia1.get() == 'km' and self.menu_desplegable_distancia2.get() == 'mm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 1000000)
+
+        elif self.menu_desplegable_distancia1.get() == 'pulgada' and self.menu_desplegable_distancia2.get() == 'pie':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 12)
+        elif self.menu_desplegable_distancia1.get() == 'pie' and self.menu_desplegable_distancia2.get() == 'pulgada':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 12)
+
+        elif self.menu_desplegable_distancia1.get() == 'pulgada' and self.menu_desplegable_distancia2.get() == 'yarda':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 36)
+        elif self.menu_desplegable_distancia1.get() == 'yarda' and self.menu_desplegable_distancia2.get() == 'pulgada':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 36)
+
+        elif self.menu_desplegable_distancia1.get() == 'cm' and self.menu_desplegable_distancia2.get() == 'm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 100)
+        elif self.menu_desplegable_distancia1.get() == 'm' and self.menu_desplegable_distancia2.get() == 'cm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 100)
+
+        elif self.menu_desplegable_distancia1.get() == 'cm' and self.menu_desplegable_distancia2.get() == 'km':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 100000)
+        elif self.menu_desplegable_distancia1.get() == 'km' and self.menu_desplegable_distancia2.get() == 'cm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 100000)
+
+        elif self.menu_desplegable_distancia1.get() == 'm' and self.menu_desplegable_distancia2.get() == 'km':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 1000)
+        elif self.menu_desplegable_distancia1.get() == 'km' and self.menu_desplegable_distancia2.get() == 'm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 1000)
+
+        elif self.menu_desplegable_distancia1.get() == 'pie' and self.menu_desplegable_distancia2.get() == 'yarda':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 3)
+        elif self.menu_desplegable_distancia1.get() == 'yarda' and self.menu_desplegable_distancia2.get() == 'pie':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 3)
+        elif self.menu_desplegable_distancia1.get() == 'mm' and self.menu_desplegable_distancia2.get() == 'milla':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 6.21371e-7)
+        elif self.menu_desplegable_distancia1.get() == 'milla' and self.menu_desplegable_distancia2.get() == 'mm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 6.21371e-7)
+
+        
+        elif self.menu_desplegable_distancia1.get() == 'pulgada' and self.menu_desplegable_distancia2.get() == 'milla':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 1.57828e-5)
+        elif self.menu_desplegable_distancia1.get() == 'milla' and self.menu_desplegable_distancia2.get() == 'pulgada':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 1.57828e-5)
+
+        elif self.menu_desplegable_distancia1.get() == 'pie' and self.menu_desplegable_distancia2.get() == 'milla':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 0.000189394)
+        elif self.menu_desplegable_distancia1.get() == 'milla' and self.menu_desplegable_distancia2.get() == 'pie':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 0.000189394)
+
+        elif self.menu_desplegable_distancia1.get() == 'yarda' and self.menu_desplegable_distancia2.get() == 'milla':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 0.000568182)
+        elif self.menu_desplegable_distancia1.get() == 'milla' and self.menu_desplegable_distancia2.get() == 'yarda':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 0.000568182)
+
+        elif self.menu_desplegable_distancia1.get() == 'cm' and self.menu_desplegable_distancia2.get() == 'pulgada':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 0.393701)
+        elif self.menu_desplegable_distancia1.get() == 'pulgada' and self.menu_desplegable_distancia2.get() == 'cm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 0.393701)
+
+        elif self.menu_desplegable_distancia1.get() == 'cm' and self.menu_desplegable_distancia2.get() == 'pie':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 0.0328084)
+        elif self.menu_desplegable_distancia1.get() == 'pie' and self.menu_desplegable_distancia2.get() == 'cm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 0.0328084)
+
+        elif self.menu_desplegable_distancia1.get() == 'cm' and self.menu_desplegable_distancia2.get() == 'yarda':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 0.0109361)
+        elif self.menu_desplegable_distancia1.get() == 'yarda' and self.menu_desplegable_distancia2.get() == 'cm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 0.0109361)
+
+        elif self.menu_desplegable_distancia1.get() == 'cm' and self.menu_desplegable_distancia2.get() == 'milla':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 6.21371e-6)
+        elif self.menu_desplegable_distancia1.get() == 'milla' and self.menu_desplegable_distancia2.get() == 'cm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 6.21371e-6)
+
+        elif self.menu_desplegable_distancia1.get() == 'm' and self.menu_desplegable_distancia2.get() == 'pulgada':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 39.3701)
+        elif self.menu_desplegable_distancia1.get() == 'pulgada' and self.menu_desplegable_distancia2.get() == 'm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 39.3701)
+
+        elif self.menu_desplegable_distancia1.get() == 'm' and self.menu_desplegable_distancia2.get() == 'pie':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 3.28084)
+        elif self.menu_desplegable_distancia1.get() == 'pie' and self.menu_desplegable_distancia2.get() == 'm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 3.28084)
+
+        elif self.menu_desplegable_distancia1.get() == 'm' and self.menu_desplegable_distancia2.get() == 'yarda':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 1.09361)
+        elif self.menu_desplegable_distancia1.get() == 'yarda' and self.menu_desplegable_distancia2.get() == 'm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 1.09361)
+
+        elif self.menu_desplegable_distancia1.get() == 'm' and self.menu_desplegable_distancia2.get() == 'milla':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 0.000621371)
+        elif self.menu_desplegable_distancia1.get() == 'milla' and self.menu_desplegable_distancia2.get() == 'm':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 0.000621371)
+
+        elif self.menu_desplegable_distancia1.get() == 'km' and self.menu_desplegable_distancia2.get() == 'pulgada':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 39370.1)
+        elif self.menu_desplegable_distancia1.get() == 'pulgada' and self.menu_desplegable_distancia2.get() == 'km':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 39370.1)
+
+        elif self.menu_desplegable_distancia1.get() == 'km' and self.menu_desplegable_distancia2.get() == 'pie':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 3280.84)
+        elif self.menu_desplegable_distancia1.get() == 'pie' and self.menu_desplegable_distancia2.get() == 'km':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 3280.84)
+
+        elif self.menu_desplegable_distancia1.get() == 'km' and self.menu_desplegable_distancia2.get() == 'yarda':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 1093.61)
+        elif self.menu_desplegable_distancia1.get() == 'km' and self.menu_desplegable_distancia2.get() == 'milla':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) * 0.621371)
+        elif self.menu_desplegable_distancia1.get() == 'milla' and self.menu_desplegable_distancia2.get() == 'km':
+            self.entry_resultado_distancia.delete(0, tk.END)
+            self.entry_resultado_distancia.insert(0, int(self.entry_distancia1.get()) / 0.621371)
+            
+        
+        
+
+        
+        
+
+
+
+
+
+
+
+
+
+class santaclaus_company_balistik(tk.Toplevel): #MARK: CLASS santaclaus_company_BALISTIK
+    
+
+
+    def __init__(self):
+        super().__init__()
+        self.configure(bg='Grey20')
+        self.geometry("500x450")
+        self.title('santaclaus_company balistick pressent delivery softwar. ')
+        _title = tk.Label(self, text= "Wellcome to the santaclaus_company christmas present delivery launching software", font= "Small_fonts_normal", bg= "yellow")
+        _title.grid(row= 0, column= 0, columnspan= 4)
+
+        _title2 = tk.Label(self, text= "please imput coordinates for pressent delivery site and press button to continue", font= "Small_fonts_normal 10", bg= "yellow")
+        _title2.grid(row=1, column=0, columnspan= 4)
+
+        self.e_texto = tk.Entry(self, font = "Arial 20", bg= "DarkGoldenrod1")
+        self.e_texto.grid(row = 2, column = 0, columnspan = 4, padx = 100, pady = 20) 
+
+        self.boton1 = tk.Button(self, text= "CONTINUE", bg= "Yellow", command= self.abrir_nueva_ventana)
+        self.boton1.grid(row= 3, column= 1, columnspan= 2)
+        self.entry_var = tk.StringVar()
+        self.place_holder_text = 'ENTER THE PASSWORD'
+        self.mainloop()
+        
+    def crear_e_texto(self):
+        self.e_texto = tk.Entry(self, font = "Arial 20", bg= "DarkGoldenrod1")
+        self.e_texto.grid(row = 2, column = 0, columnspan = 4, padx = 100, pady = 20) 
+    def abrir_nueva_ventana(self):
+        self.nueva_ventanaa = tk.Toplevel()
+        self.nueva_ventanaa.title("ENTER THE PASSWORD")
+        self.nueva_ventanaa.geometry("500x450")
+        self.nueva_ventanaa.configure(bg="grey20")
+        
+        self.e_textoi = ttk.Entry(self.nueva_ventanaa, font = "Arial 20", textvariable=self.entry_var, style='placeholder.TEntry') #bg= "DarkGoldenrod1" para tk #entry ttk que cuando le clickeas desaparece el texto
+        self.e_textoi.grid(row = 0, column = 0, columnspan = 4, padx = 100, pady = 20, ipadx=10)
+        self.e_textoi.bind("<FocusIn>", self.entry_focus_in)
+        self.e_textoi.bind("<FocusOut>", self.entry_focus_out)
+        self.e_textoi.insert(0, self.place_holder_text)
+    
+
+        self.boton_launch = tk.Button(self.nueva_ventanaa, text = "LAUNCH", width= 6, padx = 140, pady = 5, bg= "red4", command=self.init_operacion2) #comand no inicia directamente el metodo operacion2
+        self.boton_launch.grid(row=1, column=1, columnspan= 2)
+        
+        self.boton1.config(state='disable') 
+        def close_nueva_ventana():
+            self.nueva_ventanaa.destroy()
+            self.boton1.config(state='normal')
+            
+        self.nueva_ventanaa.protocol('WM_DELETE_WINDOW', close_nueva_ventana)        
+        
+    
+    def init_operacion2(self):
+        self.boton_launch.config(state='disable')
+        self.execute_operacion2 = True
+        self.operacion2()
+    def operacion2(self):
+        if self.execute_operacion2 == True:
+            code =self.e_textoi.get()
+            if code == '8571': #esperar 3 segundos antes de crear la nueva ventana que indique que el objetivo ha sido destruido
+                self.place_holder_text = 'LAUNCHING'
+                self.e_textoi.delete(0, tk.END)
+                self.e_textoi.insert(0, self.place_holder_text)
+
+                self.nueva_ventanaa.after(3000, self.crear_nueva_ventana_done) #aqui se espera
+            elif code == '':
+                self.place_holder_text='ENTER THE PASSWORD'
+                self.e_textoi.delete(0, tk.END)
+                self.e_textoi.insert(0, self.place_holder_text)
+            elif code != '  ':
+                self.place_holder_text = 'WRONG CODE'
+                self.e_textoi.delete(0, tk.END)
+                self.e_textoi.insert(0,self.place_holder_text)
+            
+    def crear_nueva_ventana_done(self):
+        self.nueva_ventana_done = tk.Toplevel()
+        self.nueva_ventana_done.configure(bg='Grey20')
+        self.nueva_ventana_done.title('Done')
+
+        _label_done = tk.Label(self.nueva_ventana_done, text='Objective has been destroyed', font= "Small_fonts_normal", bg= "yellow")
+        _label_done.pack()
+    #focusin-focusout
+    def entry_focus_in(self, event):
+        if self.entry_var.get() == self.place_holder_text:
+            self.entry_var.set("")
+    def entry_focus_out(self, event):
+        if self.entry_var.get() == "":
+            self.entry_var.set(self.place_holder_text)
+
+        
+        
+    #ENTRY DE TEXTO
+    
+    def operacion(self):
+        ecuacion =self.e_texto.get()
+    
+
+    
+
+    
+    
+        
+    
+        
+
+    
+        
+
+
+
+
+if __name__ == '__main__':
+    window = tk.Tk()
+    application = Cuerpo(window)
+    window.mainloop()
+
+
+
+
+
+
