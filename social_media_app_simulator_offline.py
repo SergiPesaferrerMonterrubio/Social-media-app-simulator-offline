@@ -1580,7 +1580,7 @@ class Cuerpo():
                 self.label_invisible_mensajes1 = ttk.Label(self.frame_chat_persona1_bot_)
                 self.label_invisible_mensajes1.config(state='disabled')
                 self.label_invisible_mensajes1.grid(row=0, column=0, padx=0, pady=0)
-                self.content_frame_top_chat_persona1_bot_ = ttk.Label(self.frame_chat_persona1_bot_, text='usuario1_bot_  --Ultima vez conectado: 30 de abril de 1945', )
+                self.content_frame_top_chat_persona1_bot_ = ttk.Label(self.frame_chat_persona1_bot_, text='usuario1_bot_  --Ultima vez conectado: ahora', )
                 self.content_frame_top_chat_persona1_bot_.grid(row=0, column=1, padx=0, pady=0 )
                 self.label_invisible_mensajes2 = ttk.Label(self.frame_chat_persona1_bot_)
                 self.label_invisible_mensajes2.config(state='disabled')
