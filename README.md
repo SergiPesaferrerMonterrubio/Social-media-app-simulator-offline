@@ -1,4 +1,4 @@
-<img width="1920" height="1153" alt="Screenshot_20261013_175640" src="https://github.com/user-attachments/assets/a593ae35-bdfe-44f0-b000-885ec831760d" />
+<img width="1919" height="1153" alt="social_media_app" src="https://github.com/user-attachments/assets/7f3d61a9-f0a9-4026-b31a-eaef85d04aa7" />
 
 # what is this?
 
