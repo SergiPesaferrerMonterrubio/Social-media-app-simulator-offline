@@ -451,7 +451,7 @@ class Cuerpo():
 
         label_categoria3 = ttk.Label(self.w_happening_but3, text='Política', style="Categoria.TLabel")
         label_categoria3.grid(row=0, sticky='ew')
-        label_nombre3=ttk.Label(self.w_happening_but3, text='Donden dinero a chaco_seco', style='Nombre.TLabel')
+        label_nombre3=ttk.Label(self.w_happening_but3, text='Ejemplo 1', style='Nombre.TLabel')
         label_nombre3.grid(row=1, sticky='ew')
         label_cantidad3 = ttk.Label(self.w_happening_but3, text='875 mil posts', style="Cantidad.TLabel")
         label_cantidad3.grid(row=2, sticky='ew')
@@ -465,7 +465,7 @@ class Cuerpo():
 
         label_categoria5 = ttk.Label(self.w_happening_but5, text='Geo-política', style="Categoria.TLabel")
         label_categoria5.grid(row=0, sticky='ew')
-        label_nombre5=ttk.Label(self.w_happening_but5, text='Legitimidad estatal Israel', style='Nombre.TLabel')
+        label_nombre5=ttk.Label(self.w_happening_but5, text='Guerra de ucrania', style='Nombre.TLabel')
         label_nombre5.grid(row=1, sticky='ew')
         label_cantidad5 = ttk.Label(self.w_happening_but5, text='122 mil posts', style="Cantidad.TLabel")
         label_cantidad5.grid(row=2, sticky='ew')
