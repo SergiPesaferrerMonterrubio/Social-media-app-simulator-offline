@@ -1,3 +1,5 @@
+<img width="1920" height="1153" alt="Screenshot_20261013_175640" src="https://github.com/user-attachments/assets/a593ae35-bdfe-44f0-b000-885ec831760d" />
+
 # what is this?
 
 This project is a simulation of the Twitter interface and functionality for educational purposes.
